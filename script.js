@@ -94,7 +94,11 @@ const musicas = [
 
   { titulo: "Quem de Nós Dois", artista: "Ana Carolina", imagem: "assets/ana-carolina-quem-de-nos-dois.png",
     frase: "Quem de nós dois vai ser o primeiro a admitir que isso é amor? E que não dá mais para fugir? 💘",
-    audio: "assets/ana-carolina-quem-de-nos-dois.mp3", duracao: "4:50", favorita: true }
+    audio: "assets/ana-carolina-quem-de-nos-dois.mp3", duracao: "4:50", favorita: true },
+	
+  { titulo: "More Than Words",artista: "Extreme", imagem: "assets/extreme-more-than-words.png", 
+    frase: "Palavras são pouco para expressar o que sinto. Meus olhos, meus gestos, meu coração - tudo grita o quanto te amo. ❤️", audio: "assets/extreme-more-than-words.mp3", duracao: "5:34", favorita: true
+  }
 ];
 
 /* ====== VARIÁVEIS GLOBAIS ====== */

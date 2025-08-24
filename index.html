@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  />
+
+  <!-- App / PWA -->
+  <title>Rádio Thay 💖</title>
+  <meta name="theme-color" content="#ff4d6d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Rádio Thay 💖" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/app-icon-180.png" />
+  <link rel="icon" type="image/png" href="/icons/app-icon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/icons/app-icon-16.png" sizes="16x16" />
+
+  <!-- SEO -->
+   <meta name="description" content="🎶 Rádio Thay 💖 — A trilha sonora romântica do seu dia.">
+    <meta property="og:title" content="Rádio Thay 💖">
+    <meta property="og:description" content="🎶 A trilha sonora do amor">
+    <meta property="og:image" content="https://enchanting-scone-9b71f4.netlify.app/icons/thumbnail.png">
+    <meta property="og:url" content="https://enchanting-scone-9b71f4.netlify.app">
+
+  <!-- Fonts & CSS -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="player-container">
+    <div class="album-art">
+      <img id="imagem-musica" src="" alt="Capa do álbum" />
+    </div>
+
+    <div class="song-info">
+      <h1 id="titulo"></h1>
+      <h2 id="artista"></h2>
+      <div class="duration">
+        <span id="inicio">0:00</span>
+        <span id="fim">0:00</span>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <input type="range" id="barra-progresso" value="0" aria-label="Barra de progresso" />
+    </div>
+
+    <div class="lyric-box">
+      <div class="lyric-pin"></div>
+      <blockquote id="frase"></blockquote>
+      <div class="lyric-pen"></div>
+    </div>
+
+    <div class="controls">
+      <button id="anterior" class="control-btn" aria-label="Música anterior">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+      <button id="play" class="control-btn play-btn" aria-label="Play/Pause">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button id="proximo" class="control-btn" aria-label="Próxima música">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+      <button id="aleatorio" class="control-btn random-btn" aria-label="Modo aleatório">
+        <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+      </button>
+      <button id="lista" class="control-btn list-btn" aria-label="Abrir lista de músicas">
+        <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+      </button>
+    </div>
+
+    <div class="secret-message" aria-label="Mensagem secreta">
+      <img src="assets/carta.png" alt="Carta fechada" class="carta-fechada" />
+      <img src="assets/carta-aberta.png" alt="Carta aberta" class="carta-aberta" style="display: none;" />
+    </div>
+
+    <audio id="audio"></audio>
+  </div>
+
+  <!-- Overlay da lista -->
+  <div id="lista-musicas" class="music-list-overlay">
+    <div class="music-list-container">
+      <div class="music-list-header">
+        <h3>Lista de Músicas</h3>
+        <button class="close-list" aria-label="Fechar lista">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar músicas..." aria-label="Buscar músicas" />
+      </div>
+      <div class="music-list-scroll">
+        <!-- Populado via script.js -->
+      </div>
+    </div>
+  </div>
+
+  <div id="efeitos-romanticos"></div>
+
+  <!-- Seu JS (inclui registro do Service Worker) -->
+  <script src="script.js"></script>
+</body>
+</html>

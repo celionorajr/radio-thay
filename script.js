@@ -502,30 +502,43 @@ function handleEnded() {
   tentativasAutoplay++;
 
   if (proximaMusicaPrecarregada && proximaMusicaPrecarregada.src) {
+    // CORREÇÃO: Primeiro determinar o próximo índice corretamente
     const novoIndice = modoAleatorio ? escolherMusicaAleatoria() : (indiceAtual + 1) % musicas.length;
-    indiceAtual = novoIndice;
-    const musica = musicas[indiceAtual];
-
+    const musica = musicas[novoIndice];
+    
+    // Atualizar a interface com os dados da nova música
     const imgEl = document.getElementById('imagem-musica');
-    if (imgEl) { imgEl.src = musica.imagem; imgEl.alt = `Capa: ${musica.titulo}`; }
+    if (imgEl) { 
+      imgEl.src = musica.imagem; 
+      imgEl.alt = `Capa: ${musica.titulo}`; 
+    }
     document.getElementById('titulo').textContent = musica.titulo;
     document.getElementById('artista').textContent = musica.artista;
     fim.textContent = musica.duracao;
     fraseElement.textContent = '';
     digitarFrase(fraseElement, musica.frase);
+    
+    // Atualizar o índice atual APÓS atualizar a interface
+    indiceAtual = novoIndice;
     updateActiveMusicInList();
     atualizarTelaBloqueio(musica);
     localStorage.setItem('ultimaMusica', indiceAtual);
 
+    // Usar o áudio pré-carregado
     audio.src = proximaMusicaPrecarregada.src;
     proximaMusicaPrecarregada = null;
-    audio.play().then(() => { tentativasAutoplay = 0; precarregarProximaMusica(); })
-      .catch(() => {
-        setTimeout(() => { audio.play().catch(()=>{}); }, 150);
-      });
+    audio.play().then(() => { 
+      tentativasAutoplay = 0; 
+      precarregarProximaMusica(); 
+    }).catch(() => {
+      setTimeout(() => { audio.play().catch(()=>{}); }, 150);
+    });
   } else {
+    // Fallback: usar a função normal de próxima música
     proximaMusica();
-    audio.play().then(()=>{ tentativasAutoplay = 0; }).catch(()=>{});
+    audio.play().then(()=>{ 
+      tentativasAutoplay = 0; 
+    }).catch(()=>{});
   }
 }
 

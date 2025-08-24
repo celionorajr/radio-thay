@@ -1,5 +1,5 @@
 /* Rádio Thay - PWA SW (stale-while-revalidate) */
-const CACHE_NAME = "radio-thay-v4";
+const CACHE_NAME = "radio-thay-v5";
 const ASSETS = [
   "/",
   "/index.html",
@@ -15,29 +15,43 @@ const ASSETS = [
 
 // Instala e faz cache inicial
 self.addEventListener("install", (event) => {
+  // Pula a espera para ativar imediatamente
+  self.skipWaiting();
+  
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
   );
 });
 
 // Ativa e remove caches antigos
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
+    Promise.all([
+      // Limpa caches antigos
+      caches.keys().then((keys) =>
+        Promise.all(keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('Removendo cache antigo:', key);
             return caches.delete(key);
           }
-        })
-      )
-    ).then(() => self.clients.claim())
+        }))
+      ),
+      // Toma controle de todas as páginas imediatamente
+      self.clients.claim()
+    ])
   );
+
+  // Notifica TODOS os clientes sobre a nova versão
+  self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
+    clients.forEach(client => {
+      client.postMessage({ type: 'NOVA_VERSAO_DISPONIVEL' });
+    });
+  });
 });
 
-// Estratégia stale-while-revalidate com fallback robusto
+// Estratégia stale-while-revalidate
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
@@ -46,40 +60,24 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Para arquivos de áudio, evitar cache de respostas parciais (206)
-  if (request.url.includes('.mp3')) {
-    event.respondWith(
-      (async () => {
-        try {
-          const networkResponse = await fetch(request);
-          if (networkResponse && networkResponse.status === 200) {
-            const cache = await caches.open(CACHE_NAME);
-            cache.put(request, networkResponse.clone());
-          }
-          return networkResponse;
-        } catch (err) {
-          const cache = await caches.open(CACHE_NAME);
-          const cached = await cache.match(request);
-          return cached || new Response('Audio not available', { status: 404 });
-        }
-      })()
-    );
-    return;
-  }
-
-  // Para outros recursos (HTML, CSS, JS, imagens)
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cached = await cache.match(request);
-      
+
+      // Tenta buscar da rede primeiro
       try {
         const networkResponse = await fetch(request);
+
+        // Atualiza o cache se a resposta for válida
         if (networkResponse && networkResponse.status === 200) {
           cache.put(request, networkResponse.clone());
         }
-        return cached || networkResponse;
+
+        // Retorna da rede (fresco) se disponível, senão do cache
+        return networkResponse || cached;
       } catch (err) {
-        return cached || new Response('Offline - content not available');
+        // Offline → devolve cache se tiver
+        return cached;
       }
     })
   );

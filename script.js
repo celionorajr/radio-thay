@@ -108,9 +108,10 @@ let modoAleatorio = false;
 let historicoAleatorio = [];
 const MAX_HISTORICO = 3;
 let proximaMusicaPrecarregada = null;
+let registration = null;
 
 /* ====== ELEMENTOS DOM ====== */
-const audio = document.getElementById('audio');   // usa o <audio id="audio"> do HTML
+const audio = document.getElementById('audio');
 audio.preload = "auto";
 audio.setAttribute('playsinline', '');
 
@@ -137,6 +138,7 @@ function init() {
   renderMusicList();
   criarEfeitosRomanticos();
   mostrarAvisoAutoplay();
+  iniciarServiceWorker();
 
   // restaurar preferências
   const savedMode = localStorage.getItem('modoAleatorio');
@@ -153,7 +155,7 @@ function init() {
   // pré-carregar próxima música
   precarregarProximaMusica();
 
-  // Inicializar AudioContext sob gesto do usuário (melhora background/autoplay em alguns navegadores)
+  // Inicializar AudioContext sob gesto do usuário
   const once = () => { initAudioContext(); document.removeEventListener('click', once); document.removeEventListener('touchend', once); };
   document.addEventListener('click', once, { passive: true });
   document.addEventListener('touchend', once, { passive: true });
@@ -165,12 +167,73 @@ function initAudioContext() {
   try {
     if (Ctx) {
       const ctx = new Ctx();
-      // cria um destino para “tocar” (sem processar); apenas “esquenta” o contexto
       const src = ctx.createMediaElementSource(audio);
       src.connect(ctx.destination);
     }
   } catch {}
   audioContextInitialized = true;
+}
+
+/* ====== SERVICE WORKER ====== */
+function iniciarServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => {
+        console.log('Service Worker registrado!');
+        registration = reg;
+        
+        // Verifica atualizações imediatamente
+        reg.update();
+        
+        // Configura verificação periódica (a cada 30 segundos)
+        setInterval(() => {
+          reg.update();
+        }, 30000);
+        
+        // Escuta por novas atualizações
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          console.log('Nova versão do Service Worker encontrada!');
+          
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              mostrarNotificacao('🎵 Nova versão disponível! Clique para atualizar.');
+              adicionarBotaoAtualizacao();
+            }
+          });
+        });
+      })
+      .catch(err => console.error('Erro no Service Worker:', err));
+
+    // Escuta mensagens do Service Worker
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data && event.data.type === 'NOVA_VERSAO_DISPONIVEL') {
+        mostrarNotificacao('🚀 Atualização disponível! Clique no botão para aplicar.');
+        adicionarBotaoAtualizacao();
+      }
+    });
+  }
+}
+
+function adicionarBotaoAtualizacao() {
+  // Remove botão existente se houver
+  const botaoExistente = document.getElementById('botao-atualizar-app');
+  if (botaoExistente) botaoExistente.remove();
+  
+  const botaoAtualizar = document.createElement('button');
+  botaoAtualizar.id = 'botao-atualizar-app';
+  botaoAtualizar.classList.add('botao-atualizar-app');
+  botaoAtualizar.innerHTML = '🔄 Atualizar App';
+  
+  botaoAtualizar.onclick = () => {
+    if (registration) {
+      registration.update().then(() => {
+        window.location.reload();
+      });
+    }
+  };
+  
+  document.body.appendChild(botaoAtualizar);
 }
 
 /* ====== EVENT LISTENERS ====== */
@@ -213,7 +276,6 @@ function setupEventListeners() {
   document.addEventListener('click', criarCoracaoNoClique);
   searchInput.addEventListener('input', filtrarMusicas);
 
-  // quando a página volta para frente, se parou no fim, tenta seguir
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && audio.ended) {
       handleEnded();
@@ -270,14 +332,13 @@ function carregarMusica(indice) {
   if (imgEl) {
     imgEl.src = musica.imagem;
     imgEl.alt = `Capa: ${musica.titulo}`;
-    imgEl.onerror = () => { imgEl.onerror = null; /* fallback opcional */ };
+    imgEl.onerror = () => { imgEl.onerror = null; };
   }
 
   fim.textContent = musica.duracao;
   barraProgresso.value = 0;
   inicio.textContent = '0:00';
 
-  // libera pré-carregada anterior
   if (proximaMusicaPrecarregada) {
     proximaMusicaPrecarregada.src = "";
     proximaMusicaPrecarregada = null;
@@ -329,7 +390,6 @@ function togglePlay() {
     if (!audio.src) carregarMusica(indiceAtual);
     audio.play().catch((e) => {
       console.error("Erro ao reproduzir:", e);
-      // tenta re-carregar rápido
       setTimeout(() => {
         carregarMusica(indiceAtual);
         audio.play().catch(()=>{});
@@ -344,7 +404,6 @@ function proximaMusica() {
   const novoIndice = modoAleatorio ? escolherMusicaAleatoria() : (indiceAtual + 1) % musicas.length;
   carregarMusica(novoIndice);
   if (isPlaying) {
-    // tocar imediatamente (evitar timers em background)
     audio.play().catch(() => {});
   }
 }
@@ -435,7 +494,6 @@ function handlePlay() { isPlaying = true; updateUI(); if (vinylHeart) vinylHeart
 function handlePause() { isPlaying = false; updateUI(); if (vinylHeart) vinylHeart.classList.remove('playing'); }
 
 function handleEnded() {
-  // evita loops de falha quando o SO bloqueia autoplay em background
   if (tentativasAutoplay > 2) {
     isPlaying = false;
     updateUI();
@@ -443,13 +501,11 @@ function handleEnded() {
   }
   tentativasAutoplay++;
 
-  // se já temos pré-carregada, aproveita
   if (proximaMusicaPrecarregada && proximaMusicaPrecarregada.src) {
     const novoIndice = modoAleatorio ? escolherMusicaAleatoria() : (indiceAtual + 1) % musicas.length;
     indiceAtual = novoIndice;
     const musica = musicas[indiceAtual];
 
-    // troca UI
     const imgEl = document.getElementById('imagem-musica');
     if (imgEl) { imgEl.src = musica.imagem; imgEl.alt = `Capa: ${musica.titulo}`; }
     document.getElementById('titulo').textContent = musica.titulo;
@@ -461,16 +517,13 @@ function handleEnded() {
     atualizarTelaBloqueio(musica);
     localStorage.setItem('ultimaMusica', indiceAtual);
 
-    // põe o src e toca
     audio.src = proximaMusicaPrecarregada.src;
     proximaMusicaPrecarregada = null;
     audio.play().then(() => { tentativasAutoplay = 0; precarregarProximaMusica(); })
       .catch(() => {
-        // fallback simples
         setTimeout(() => { audio.play().catch(()=>{}); }, 150);
       });
   } else {
-    // fallback clássico
     proximaMusica();
     audio.play().then(()=>{ tentativasAutoplay = 0; }).catch(()=>{});
   }
@@ -585,23 +638,8 @@ function mostrarAvisoAutoplay() {
 /* ====== ERROS ÁUDIO ====== */
 function tratarErroAudio() {
   console.error("Erro no áudio");
-  // pula faixa problemática após 1s
   setTimeout(proximaMusica, 1000);
 }
 
 /* ====== START ====== */
 window.addEventListener('load', init);
-
-/* ====== PWA: Service Worker + aviso de atualização ====== */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(() => console.log('Service Worker registrado!'))
-      .catch((err) => console.error('SW erro:', err));
-  });
-
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    console.log('Nova versão do Service Worker ativada!');
-    mostrarNotificacao('🚀 Nova versão da Rádio Thay disponível! Recarregue a página.');
-  });
-}

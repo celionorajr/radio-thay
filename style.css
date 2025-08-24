@@ -505,5 +505,64 @@ blockquote {
     height: 220px;
     transform: scale(1.1);
   }
+  
+  /* BOTÃO DE ATUALIZAÇÃO (NOVO) - ESTILO COERENTE COM O PLAYER */
+#botao-atualizar-app {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass);
+}
+
+#botao-atualizar-app:hover {
+  background: var(--primary-dark);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (min-width: 768px) {
+  .album-art {
+    width: 260px;
+    height: 260px;
+    transform: scale(1.3);
+  }
+  
+  .player-container {
+    padding: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .album-art {
+    width: 220px;
+    height: 220px;
+    transform: scale(1.1);
+  }
+
+  #botao-atualizar-app {
+    top: 5px;
+    right: 5px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
 
 }

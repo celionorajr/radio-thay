@@ -103,6 +103,12 @@ const musicas = [
   { titulo: "Shimbalaiê",  artista: "Maria Gadú",  imagem: "assets/maria-gadu-shimbalaie.png",
     frase: "Você me conquista sem dizer uma palavra... Seu jeito, seu olhar, seu toque - tudo em você é uma dança que me encanta. 💃🕺",
     audio: "assets/maria-gadu-shimbalaie.mp3", duracao: "3:22", favorita: true
+  },
+  
+  {
+  titulo: "Mania de Você", artista: "Rita Lee", imagem: "assets/rita-lee-mania-de-voce.png",
+  frase: "Não é mania, não é paixão, não é carência... É algo muito maior: é amor puro e sincero que não consigo controlar. 💘",
+  audio: "assets/rita-lee-mania-de-voce.mp3", duracao: "4:20", favorita: true
   }
 ];
 

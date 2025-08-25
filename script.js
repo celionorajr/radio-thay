@@ -98,6 +98,11 @@ const musicas = [
 	
   { titulo: "More Than Words",artista: "Extreme", imagem: "assets/extreme-more-than-words.png", 
     frase: "Palavras são pouco para expressar o que sinto. Meus olhos, meus gestos, meu coração - tudo grita o quanto te amo. ❤️", audio: "assets/extreme-more-than-words.mp3", duracao: "5:34", favorita: true
+  },
+  
+  { titulo: "Shimbalaiê",  artista: "Maria Gadú",  imagem: "assets/maria-gadu-shimbalaie.png",
+    frase: "Você me conquista sem dizer uma palavra... Seu jeito, seu olhar, seu toque - tudo em você é uma dança que me encanta. 💃🕺",
+    audio: "assets/maria-gadu-shimbalaie.mp3", duracao: "3:22", favorita: true
   }
 ];
 

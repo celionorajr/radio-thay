@@ -318,7 +318,7 @@ function atualizarTelaBloqueio(musica) {
       navigator.mediaSession.setActionHandler("nexttrack", () => proximaMusica());
     } catch {}
   }
-  atualizarFavicon(musica.imagem);
+  //atualizarFavicon(musica.imagem);
 }
 
 function atualizarFavicon(imagemSrc) {

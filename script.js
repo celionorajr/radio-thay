@@ -57,7 +57,7 @@ const musicas = [
     audio: "assets/roberta_campos_de_janeiro_a_janeiro.mp3", duracao: "3:13" },
 
   { titulo: "I Don't Want to Miss a Thing", artista: "Aerosmith", imagem: "assets/aerosmith_i_dont_want_to_miss_a_thing.png",
-    frase: "Não quero perder nenhum momento ao seu lado... até seus sonhos são parte de mim. 💫",
+    frase: "Não quero perder nenhum momento ao seu lado... até seus sonhos são parte de moi. 💫",
     audio: "assets/aerosmith_i_dont_want_to_miss_a_thing.mp3", duracao: "4:59" },
 
   { titulo: "Sweet Child O' Mine", artista: "Guns N' Roses", imagem: "assets/guns_n_roses_sweet_child_o_mine.png",
@@ -105,10 +105,14 @@ const musicas = [
     audio: "assets/maria-gadu-shimbalaie.mp3", duracao: "3:22", favorita: true
   },
   
-  {
-  titulo: "Mania de Você", artista: "Rita Lee", imagem: "assets/rita-lee-mania-de-voce.png",
-  frase: "Não é mania, não é paixão, não é carência... É algo muito maior: é amor puro e sincero que não consigo controlar. 💘",
-  audio: "assets/rita-lee-mania-de-voce.mp3", duracao: "4:20", favorita: true
+  { titulo: "Mania de Você", artista: "Rita Lee", imagem: "assets/rita-lee-mania-de-voce.png",
+    frase: "Não é mania, não é paixão, não é carência... É algo muito maior: é amor puro e sincero que não consigo controlar. 💘",
+    audio: "assets/rita-lee-mania-de-voce.mp3", duracao: "4:20", favorita: true
+  },
+  
+  { titulo: "Sunshine of Your Love", artista: "Cream", imagem: "assets/cream-sunshine-of-your-love.png",
+    frase: "Seu amor é como o sol que ilumina meus dias mais escuros. Não consigo viver sem a luz que você traz para minha vida. ☀️",
+    audio: "assets/cream-sunshine-of-your-love.mp3", duracao: "4:10", favorita: true
   }
 ];
 
@@ -124,6 +128,17 @@ let historicoAleatorio = [];
 const MAX_HISTORICO = 3;
 let proximaMusicaPrecarregada = null;
 let registration = null;
+
+/* ====== iOS / Standalone detection + estado background ====== */
+const isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+const estadoBG = {
+  wasPlaying: false,
+  savedTime: 0,
+  savedIndex: 0,
+  stamp: 0
+};
 
 /* ====== ELEMENTOS DOM ====== */
 const audio = document.getElementById('audio');
@@ -291,9 +306,47 @@ function setupEventListeners() {
   document.addEventListener('click', criarCoracaoNoClique);
   searchInput.addEventListener('input', filtrarMusicas);
 
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && audio.ended) {
+  // Guarda posição/estado ao sair (ir para segundo plano)
+  window.addEventListener('pagehide', () => {
+    estadoBG.wasPlaying = !audio.paused;
+    estadoBG.savedTime = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+    estadoBG.savedIndex = indiceAtual;
+    estadoBG.stamp = performance.now();
+  });
+
+  // Ao voltar para o app (primeiro repaint)
+  window.addEventListener('pageshow', () => {
+    // iOS PWA costuma "avançar" o currentTime – nós voltamos exatamente de onde paramos
+    const drift = Math.abs(audio.currentTime - estadoBG.savedTime);
+    const TOL = 1.5; // tolerância em segundos
+
+    // Se mudou de música indevidamente ou avançou demais, reponha o estado
+    if (indiceAtual !== estadoBG.savedIndex || drift > TOL) {
+      try { audio.currentTime = estadoBG.savedTime; } catch {}
+      updateUI();
+    }
+
+    // Se estava tocando, tentamos retomar automaticamente
+    if (estadoBG.wasPlaying) {
+      audio.play().catch(() => {});
+    }
+
+    // Se a faixa terminou enquanto estávamos fora (estado marcado), avance corretamente
+    if (audio.ended) {
       handleEnded();
+    }
+  });
+
+  // Opcional: no iOS em modo standalone, pausar explicitamente ao esconder evita "engasgos"
+  document.addEventListener('visibilitychange', () => {
+    if (isIOS && isStandalone) {
+      if (document.hidden) {
+        // Salva e pausa – o iOS ia suspender mesmo; assim prevenimos saltos
+        estadoBG.wasPlaying = !audio.paused;
+        estadoBG.savedTime = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+        estadoBG.savedIndex = indiceAtual;
+        audio.pause();
+      }
     }
   });
 }
@@ -319,6 +372,20 @@ function atualizarTelaBloqueio(musica) {
     } catch {}
   }
   //atualizarFavicon(musica.imagem);
+}
+
+function syncMediaSessionPosition() {
+  if ('mediaSession' in navigator && typeof navigator.mediaSession.setPositionState === 'function') {
+    if (Number.isFinite(audio.duration) && Number.isFinite(audio.currentTime)) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: audio.duration,
+          position: audio.currentTime,
+          playbackRate: audio.playbackRate || 1
+        });
+      } catch {}
+    }
+  }
 }
 
 function atualizarFavicon(imagemSrc) {
@@ -528,8 +595,18 @@ function filtrarMusicas() {
 }
 
 /* ====== ÁUDIO: ESTADO / PROGRESSO ====== */
-function handlePlay() { isPlaying = true; updateUI(); if (vinylHeart) vinylHeart.classList.add('playing'); }
-function handlePause() { isPlaying = false; updateUI(); if (vinylHeart) vinylHeart.classList.remove('playing'); }
+function handlePlay() { 
+  isPlaying = true; 
+  updateUI(); 
+  if (vinylHeart) vinylHeart.classList.add('playing'); 
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+}
+function handlePause() { 
+  isPlaying = false; 
+  updateUI(); 
+  if (vinylHeart) vinylHeart.classList.remove('playing'); 
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+}
 
 function handleEnded() {
   if (tentativasAutoplay > 2) {
@@ -642,12 +719,14 @@ function atualizarProgresso() {
     barraProgresso.max = audio.duration;
     barraProgresso.value = audio.currentTime;
     inicio.textContent = formatarTempo(audio.currentTime);
+    syncMediaSessionPosition(); // <-- adicione aqui
   }
 }
 function carregarDuracao() {
   if (!isNaN(audio.duration) && isFinite(audio.duration)) {
     barraProgresso.max = audio.duration;
     fim.textContent = formatarTempo(audio.duration);
+    syncMediaSessionPosition(); // <-- adicione aqui
   } else {
     fim.textContent = '0:00';
   }
@@ -655,6 +734,7 @@ function carregarDuracao() {
 function seekAudio() {
   audio.currentTime = Number(barraProgresso.value || 0);
   inicio.textContent = formatarTempo(audio.currentTime);
+  syncMediaSessionPosition(); // <-- adicione aqui
 }
 function formatarTempo(seg) {
   const m = Math.floor(seg / 60);

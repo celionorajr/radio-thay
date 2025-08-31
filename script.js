@@ -113,6 +113,36 @@ const musicas = [
   { titulo: "Sunshine of Your Love", artista: "Cream", imagem: "assets/cream-sunshine-of-your-love.png",
     frase: "Seu amor é como o sol que ilumina meus dias mais escuros. Não consigo viver sem a luz que você traz para minha vida. ☀️",
     audio: "assets/cream-sunshine-of-your-love.mp3", duracao: "4:10", favorita: true
+  },
+  
+  { titulo: "Someone You Loved", artista: "Lewis Capaldi", imagem: "assets/lewis-capaldi-someone-you-loved.png",
+  frase: "Antes de você, eu só sobrevivia. Agora, finalmente entendo o que é viver de verdade. Você chegou e preencheu todos os vazios que eu nem sabia que tinha. 🌈",
+  audio: "assets/lewis-capaldi-someone-you-loved.mp3", duracao: "3:02", favorita: true
+  },
+  
+  { titulo: "I Was Made For Lovin' You", artista: "KISS", imagem: "assets/kiss-i-was-made-for-lovin-you.png",
+  frase: "O universo não errou: eu fui feito para te amar, você foi feita para me amar, e juntos somos uma combinação explosiva de paixão! 💥",
+  audio: "assets/kiss-i-was-made-for-lovin-you.mp3", duracao: "4:31", favorita: true
+  },
+  
+  { titulo: "You're Mine", artista: "Disturbed", imagem: "assets/disturbed-youre-mine.png",
+  frase: "Não é posse, é destino. Não é obsessão, é certeza. Você é minha e eu sou seu, e nada nesse mundo vai mudar isso. 🌑",
+  audio: "assets/disturbed-youre-mine.mp3", duracao: "4:55", favorita: true
+  },
+  
+  { titulo: "Borbulhas de Amor", artista: "Fagner", imagem: "assets/fagner-borbulhas-de-amor.png",
+  frase: "Seu amor é como espuma de champagne: doce, efervescente e fazendo meu coração borbulhar de felicidade. Cada momento contigo é uma celebração! 🥂",
+  audio: "assets/fagner-borbulhas-de-amor.mp3", duracao: "3:30", favorita: true
+  },
+  
+  { titulo: "True Love", artista: "SOJA", imagem: "assets/soja-true-love.png",
+  frase: "Seu amor é como o reggae: suave, sincero e cura minha alma. Não é passageiro, não é ilusão – é true love, puro e real. 🎶",
+  audio: "assets/soja-true-love.mp3", duracao: "4:03", favorita: true
+  },
+  
+  { titulo: "Is This Love", artista: "Bob Marley", imagem: "assets/bob-marley-is-this-love.png",
+  frase: "Não sei se é amor, sei que é algo lindo que sinto por você. Algo que me acalma, me completa e me faz querer compartilhar cada dia ao seu lado. 🌅",
+  audio: "assets/bob-marley-is-this-love.mp3",  duracao: "3:52", favorita: true
   }
 ];
 
@@ -128,6 +158,8 @@ let historicoAleatorio = [];
 const MAX_HISTORICO = 3;
 let proximaMusicaPrecarregada = null;
 let registration = null;
+let appInBackground = false;
+let keepAliveInterval = null;
 
 /* ====== iOS / Standalone detection + estado background ====== */
 const isIOS = /iP(hone|ad|od)/i.test(navigator.userAgent);
@@ -170,6 +202,15 @@ function init() {
   mostrarAvisoAutoplay();
   iniciarServiceWorker();
 
+  // Adicionar detector de visibilidade
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+  // Configurar Media Session para melhor controle em segundo plano
+  setupMediaSession();
+
+  // Iniciar keep-alive para reprodução em segundo plano
+  startKeepAlive();
+
   // restaurar preferências
   const savedMode = localStorage.getItem('modoAleatorio');
   if (savedMode === 'true') {
@@ -202,6 +243,69 @@ function initAudioContext() {
     }
   } catch {}
   audioContextInitialized = true;
+}
+
+/* ====== CONTROLE DE VISIBILIDADE (SEGUNDO PLANO) ====== */
+function handleVisibilityChange() {
+  if (document.hidden) {
+    console.log("App em segundo plano");
+    appInBackground = true;
+    
+    // Tentar manter a reprodução ativa
+    if (isPlaying) {
+      // Forçar uma reprodução quando entrar em segundo plano
+      setTimeout(() => {
+        if (audio.paused && isPlaying) {
+          console.log("Tentando retomar reprodução em segundo plano");
+          audio.play().catch(e => console.log("Erro ao reproduzir em segundo plano:", e));
+        }
+      }, 300);
+    }
+  } else {
+    console.log("App em primeiro plano");
+    appInBackground = false;
+  }
+}
+
+/* ====== MEDIA SESSION (CONTROLES EXTERNOS) ====== */
+function setupMediaSession() {
+  if ('mediaSession' in navigator) {
+    try {
+      // Configurar handlers para controles externos (notificação, fones de ouvido, etc.)
+      navigator.mediaSession.setActionHandler('play', () => {
+        audio.play().catch(e => console.error("Erro ao reproduzir via mediaSession:", e));
+      });
+      
+      navigator.mediaSession.setActionHandler('pause', () => {
+        audio.pause();
+      });
+      
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        musicaAnterior();
+      });
+      
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        proximaMusica();
+      });
+      
+      // Atualizar a posição periodicamente
+      setInterval(syncMediaSessionPosition, 1000);
+    } catch (error) {
+      console.error("Erro ao configurar mediaSession:", error);
+    }
+  }
+}
+
+/* ====== KEEP-ALIVE PARA SEGUNDO PLANO ====== */
+function startKeepAlive() {
+  if (keepAliveInterval) clearInterval(keepAliveInterval);
+  
+  keepAliveInterval = setInterval(() => {
+    if (appInBackground && isPlaying && audio.paused) {
+      console.log("Keep-alive: tentando retomar reprodução em segundo plano");
+      audio.play().catch(e => console.log("Keep-alive não conseguiu retomar:", e));
+    }
+  }, 30000); // Tentar a cada 30 segundos
 }
 
 /* ====== SERVICE WORKER ====== */
@@ -480,17 +584,31 @@ function digitarFrase(element, text, i = 0) {
 /* ====== CONTROLES ====== */
 function togglePlay() {
   initAudioContext();
+  
   if (isPlaying) {
     audio.pause();
   } else {
     if (!audio.src) carregarMusica(indiceAtual);
-    audio.play().catch((e) => {
-      console.error("Erro ao reproduzir:", e);
-      setTimeout(() => {
-        carregarMusica(indiceAtual);
-        audio.play().catch(()=>{});
-      }, 200);
-    });
+    
+    const tentarPlay = () => {
+      audio.play()
+        .catch((e) => {
+          console.error("Erro ao reproduzir:", e);
+          
+          // Se for uma restrição de autoplay, esperar interação
+          if (e.name === 'NotAllowedError') {
+            mostrarNotificacao("Clique para reproduzir a música");
+          } else {
+            // Para outros erros, tentar recarregar e reproduzir
+            setTimeout(() => {
+              carregarMusica(indiceAtual);
+              audio.play().catch(()=>{});
+            }, 200);
+          }
+        });
+    };
+    
+    tentarPlay();
   }
   criarCoracao(playBtn);
 }
@@ -609,6 +727,8 @@ function handlePause() {
 }
 
 function handleEnded() {
+  console.log("Música terminada, app em segundo plano:", appInBackground);
+  
   if (tentativasAutoplay > 2) {
     isPlaying = false;
     updateUI();
@@ -616,89 +736,69 @@ function handleEnded() {
   }
   tentativasAutoplay++;
 
+  // Determinar próxima música
+  let novoIndice;
   if (modoAleatorio) {
-    // Modo aleatório: escolher nova música e carregar diretamente
-    const novoIndice = escolherMusicaAleatoria();
-    
-    // Primeiro carregar a música completamente
-    const musica = musicas[novoIndice];
-    
-    // Atualizar interface IMEDIATAMENTE
-    const imgEl = document.getElementById('imagem-musica');
-    if (imgEl) {
-      imgEl.src = musica.imagem;
-      imgEl.alt = `Capa: ${musica.titulo}`;
-    }
-    document.getElementById('titulo').textContent = musica.titulo;
-    document.getElementById('artista').textContent = musica.artista;
-    fim.textContent = musica.duracao;
-    fraseElement.textContent = '';
-    digitarFrase(fraseElement, musica.frase);
-    
-    indiceAtual = novoIndice;
-    updateActiveMusicInList();
-    atualizarTelaBloqueio(musica);
-    localStorage.setItem('ultimaMusica', indiceAtual);
-
-    // Configurar o áudio e esperar ele estar pronto
-    audio.src = musica.audio;
-    audio.load();
-    
-    // Esperar o áudio estar carregado antes de reproduzir
-    audio.oncanplaythrough = function() {
-      audio.play().then(() => {
-        tentativasAutoplay = 0;
-        audio.oncanplaythrough = null; // Remover o listener
-      }).catch((error) => {
-        console.error("Erro ao reproduzir próxima música:", error);
-        audio.oncanplaythrough = null;
-        setTimeout(() => {
-          audio.play().catch(() => {});
-        }, 150);
-      });
-    };
-    
+    novoIndice = escolherMusicaAleatoria();
   } else {
-    // Modo sequencial: usar pré-carregamento se disponível
-    if (proximaMusicaPrecarregada && proximaMusicaPrecarregada.src) {
-      const novoIndice = (indiceAtual + 1) % musicas.length;
-      const musica = musicas[novoIndice];
-      
-      // Atualizar interface
-      const imgEl = document.getElementById('imagem-musica');
-      if (imgEl) {
-        imgEl.src = musica.imagem;
-        imgEl.alt = `Capa: ${musica.titulo}`;
-      }
-      document.getElementById('titulo').textContent = musica.titulo;
-      document.getElementById('artista').textContent = musica.artista;
-      fim.textContent = musica.duracao;
-      fraseElement.textContent = '';
-      digitarFrase(fraseElement, musica.frase);
-      
-      indiceAtual = novoIndice;
-      updateActiveMusicInList();
-      atualizarTelaBloqueio(musica);
-      localStorage.setItem('ultimaMusica', indiceAtual);
+    novoIndice = (indiceAtual + 1) % musicas.length;
+  }
 
-      audio.src = proximaMusicaPrecarregada.src;
-      proximaMusicaPrecarregada = null;
-      audio.play().then(() => {
+  const proxima = musicas[novoIndice];
+  
+  // Atualizar interface IMEDIATAMENTE
+  const imgEl = document.getElementById('imagem-musica');
+  if (imgEl) {
+    imgEl.src = proxima.imagem;
+    imgEl.alt = `Capa: ${proxima.titulo}`;
+  }
+  
+  document.getElementById('titulo').textContent = proxima.titulo;
+  document.getElementById('artista').textContent = proxima.artista;
+  fim.textContent = proxima.duracao;
+  fraseElement.textContent = '';
+  digitarFrase(fraseElement, proxima.frase);
+  
+  indiceAtual = novoIndice;
+  updateActiveMusicInList();
+  atualizarTelaBloqueio(proxima);
+  localStorage.setItem('ultimaMusica', indiceAtual);
+
+  // Configurar o áudio
+  audio.src = proxima.audio;
+  audio.load();
+  
+  // Tentar reproduzir independente do estado do app
+  const tentarReproduzir = () => {
+    audio.play()
+      .then(() => {
+        console.log("Próxima música iniciada com sucesso");
         tentativasAutoplay = 0;
-        precarregarProximaMusica();
-      }).catch((error) => {
-        console.error("Erro ao reproduzir música pré-carregada:", error);
-        setTimeout(() => {
-          audio.play().catch(() => {});
-        }, 150);
+        
+        // Se estiver em segundo plano, garantir que continue tocando
+        if (appInBackground) {
+          console.log("App em segundo plano - mantendo reprodução");
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao reproduzir próxima música:", error);
+        
+        // Tentar novamente após um curto intervalo
+        if (tentativasAutoplay < 3) {
+          setTimeout(tentarReproduzir, 500);
+        } else {
+          // Se não conseguir após várias tentativas, pelo menos preparar para quando voltar
+          isPlaying = true;
+          updateUI();
+        }
       });
-    } else {
-      // Fallback: usar a função normal de próxima música
-      proximaMusica();
-      audio.play().then(() => {
-        tentativasAutoplay = 0;
-      }).catch(() => {});
-    }
+  };
+  
+  // Esperar o áudio estar carregado antes de reproduzir
+  if (audio.readyState >= 3) { // HAVE_FUTURE_DATA
+    tentarReproduzir();
+  } else {
+    audio.oncanplaythrough = tentarReproduzir;
   }
 }
 
@@ -719,14 +819,14 @@ function atualizarProgresso() {
     barraProgresso.max = audio.duration;
     barraProgresso.value = audio.currentTime;
     inicio.textContent = formatarTempo(audio.currentTime);
-    syncMediaSessionPosition(); // <-- adicione aqui
+    syncMediaSessionPosition();
   }
 }
 function carregarDuracao() {
   if (!isNaN(audio.duration) && isFinite(audio.duration)) {
     barraProgresso.max = audio.duration;
     fim.textContent = formatarTempo(audio.duration);
-    syncMediaSessionPosition(); // <-- adicione aqui
+    syncMediaSessionPosition();
   } else {
     fim.textContent = '0:00';
   }
@@ -734,7 +834,7 @@ function carregarDuracao() {
 function seekAudio() {
   audio.currentTime = Number(barraProgresso.value || 0);
   inicio.textContent = formatarTempo(audio.currentTime);
-  syncMediaSessionPosition(); // <-- adicione aqui
+  syncMediaSessionPosition();
 }
 function formatarTempo(seg) {
   const m = Math.floor(seg / 60);
@@ -778,7 +878,7 @@ function criarEfeitosRomanticos() {
 /* ====== MENSAGENS / NOTIFICAÇÕES ====== */
 function mostrarMensagemSecreta() {
   const mensagens = [
-    "Você é especial para mim","Gosto muito de você","Cada dia com você é único",
+    "Você é especial para mim","Gosto muito de você","Cada day com você é único",
     "Seu sorriso me alegra","Você faz meus dias melhores","Meu coração é seu ❤️",
     "Sinto sua falta mesmo quando você está perto","Você é meu pensamento favorito",
     "Amo o jeito que você me olha","Seu abraço é meu lugar favorito","Você me completa",

@@ -1,5 +1,5 @@
 /* Rádio Thay - PWA SW (stale-while-revalidate) */
-const CACHE_NAME = "radio-thay-v12";
+const CACHE_NAME = "radio-thay-v13";
 const ASSETS = [
   "/",
   "/index.html",

@@ -141,7 +141,7 @@ const musicas = [
   },
   
   { titulo: "Is This Love", artista: "Bob Marley", imagem: "assets/bob-marley-is-this-love.png",
-  frase: "Não sei se é amor, sei que é algo lindo que sinto por você. Algo que me acalma, me completa e me faz querer compartilhar cada day ao seu lado. 🌅",
+  frase: "Não sei se é amor, sei que é algo lindo que sinto por você. Algo que me acalma, me completa e me faz querer compartilhar cada dia ao seu lado. 🌅",
   audio: "assets/bob-marley-is-this-love.mp3",  duracao: "3:52", favorita: true
   },
   
@@ -694,159 +694,233 @@ function renderMusicList() {
         <p>${musica.artista}</p>
       </div>
       <div class="music-item-duration">${musica.duracao}</div>
-      ${musica.favorita ? '<span class="favorite-icon">❤️</span>' : ''}
     `;
     item.addEventListener('click', () => {
-      if (isTyping) clearTimeout(typingInterval);
       carregarMusica(index);
-      if (isPlaying) {
-        audio.play().catch(() => {});
-      }
+      if (isPlaying) audio.play().catch(()=>{});
       toggleListaMusicas();
     });
     listaContainer.appendChild(item);
   });
 }
-function filtrarMusicas() {
-  const termo = searchInput.value.toLowerCase();
-  const itens = listaContainer.querySelectorAll('.music-item');
-  itens.forEach((item, index) => {
-    const titulo = musicas[index].titulo.toLowerCase();
-    const artista = musicas[index].artista.toLowerCase();
-    if (titulo.includes(termo) || artista.includes(termo)) {
-      item.style.display = 'flex';
-    } else {
-      item.style.display = 'none';
-    }
+function updateActiveMusicInList() {
+  document.querySelectorAll('.music-item').forEach((item, index) => {
+    item.classList.toggle('active', index === indiceAtual);
   });
 }
-function updateActiveMusicInList() {
-  const itens = listaContainer.querySelectorAll('.music-item');
-  itens.forEach((item, index) => {
-    if (index === indiceAtual) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
+function filtrarMusicas() {
+  const termo = (searchInput.value || '').toLowerCase();
+  document.querySelectorAll('.music-item').forEach((item, index) => {
+    const m = musicas[index];
+    const texto = `${m.titulo.toLowerCase()} ${m.artista.toLowerCase()}`;
+    item.style.display = texto.includes(termo) ? 'flex' : 'none';
   });
 }
 
-/* ====== PROGRESSO ====== */
-function carregarDuracao() {
-  if (Number.isFinite(audio.duration)) {
-    barraProgresso.max = audio.duration;
-    fim.textContent = formatarTempo(audio.duration);
+/* ====== ÁUDIO: ESTADO / PROGRESSO ====== */
+function handlePlay() { 
+  isPlaying = true; 
+  updateUI(); 
+  if (vinylHeart) vinylHeart.classList.add('playing'); 
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+}
+function handlePause() { 
+  isPlaying = false; 
+  updateUI(); 
+  if (vinylHeart) vinylHeart.classList.remove('playing'); 
+  if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+}
+
+function handleEnded() {
+  console.log("Música terminada, app em segundo plano:", appInBackground);
+  
+  if (tentativasAutoplay > 2) {
+    isPlaying = false;
+    updateUI();
+    return;
+  }
+  tentativasAutoplay++;
+
+  // Determinar próxima música
+  let novoIndice;
+  if (modoAleatorio) {
+    novoIndice = escolherMusicaAleatoria();
+  } else {
+    novoIndice = (indiceAtual + 1) % musicas.length;
+  }
+
+  const proxima = musicas[novoIndice];
+  
+  // Atualizar interface IMEDIATAMENTE
+  const imgEl = document.getElementById('imagem-musica');
+  if (imgEl) {
+    imgEl.src = proxima.imagem;
+    imgEl.alt = `Capa: ${proxima.titulo}`;
+  }
+  
+  document.getElementById('titulo').textContent = proxima.titulo;
+  document.getElementById('artista').textContent = proxima.artista;
+  fim.textContent = proxima.duracao;
+  fraseElement.textContent = '';
+  digitarFrase(fraseElement, proxima.frase);
+  
+  indiceAtual = novoIndice;
+  updateActiveMusicInList();
+  atualizarTelaBloqueio(proxima);
+  localStorage.setItem('ultimaMusica', indiceAtual);
+
+  // Configurar o áudio
+  audio.src = proxima.audio;
+  audio.load();
+  
+  // Tentar reproduzir independente do estado do app
+  const tentarReproduzir = () => {
+    audio.play()
+      .then(() => {
+        console.log("Próxima música iniciada com sucesso");
+        tentativasAutoplay = 0;
+        
+        // Se estiver em segundo plano, garantir que continue tocando
+        if (appInBackground) {
+          console.log("App em segundo plano - mantendo reprodução");
+        }
+      })
+      .catch((error) => {
+        console.error("Erro ao reproduzir próxima música:", error);
+        
+        // Tentar novamente após um curto intervalo
+        if (tentativasAutoplay < 3) {
+          setTimeout(tentarReproduzir, 500);
+        } else {
+          // Se não conseguir após várias tentativas, pelo menos preparar para quando voltar
+          isPlaying = true;
+          updateUI();
+        }
+      });
+  };
+  
+  // Esperar o áudio estar carregado antes de reproduzir
+  if (audio.readyState >= 3) { // HAVE_FUTURE_DATA
+    tentarReproduzir();
+  } else {
+    audio.oncanplaythrough = tentarReproduzir;
   }
 }
+
+function updateUI() {
+  const playIcon = playBtn.querySelector('svg');
+  if (!playIcon) return;
+  if (isPlaying) {
+    playBtn.classList.add('playing');
+    playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  } else {
+    playBtn.classList.remove('playing');
+    playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  }
+}
+
 function atualizarProgresso() {
-  if (Number.isFinite(audio.currentTime)) {
+  if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+    barraProgresso.max = audio.duration;
     barraProgresso.value = audio.currentTime;
     inicio.textContent = formatarTempo(audio.currentTime);
+    syncMediaSessionPosition();
+  }
+}
+function carregarDuracao() {
+  if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+    barraProgresso.max = audio.duration;
+    fim.textContent = formatarTempo(audio.duration);
+    syncMediaSessionPosition();
+  } else {
+    fim.textContent = '0:00';
   }
 }
 function seekAudio() {
-  audio.currentTime = barraProgresso.value;
+  audio.currentTime = Number(barraProgresso.value || 0);
+  inicio.textContent = formatarTempo(audio.currentTime);
+  syncMediaSessionPosition();
 }
-function formatarTempo(segundos) {
-  const min = Math.floor(segundos / 60);
-  const sec = Math.floor(segundos % 60);
-  return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-}
-
-/* ====== EVENTOS DE ÁUDIO ====== */
-function handlePlay() {
-  isPlaying = true;
-  playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  playBtn.classList.add('playing');
-  if (vinylHeart) vinylHeart.classList.add('playing');
-}
-function handlePause() {
-  isPlaying = false;
-  playBtn.innerHTML = '<i class="fas fa-play"></i>';
-  playBtn.classList.remove('playing');
-  if (vinylHeart) vinylHeart.classList.remove('playing');
-}
-function handleEnded() {
-  proximaMusica();
-}
-function tratarErroAudio(e) {
-  console.error("Erro no áudio:", e);
-  mostrarNotificacao("Erro ao carregar música. Tentando próxima...");
-  setTimeout(() => proximaMusica(), 1000);
+function formatarTempo(seg) {
+  const m = Math.floor(seg / 60);
+  const s = Math.floor(seg % 60);
+  return `${m}:${s < 10 ? '0' + s : s}`;
 }
 
-/* ====== EFEITOS ====== */
-function criarCoracaoNoClique(e) {
-  if (e.target.closest('button') || e.target.closest('.music-item')) return;
-  criarCoracao(e);
-}
-function criarCoracao(elemento) {
+/* ====== EFEITOS VISUAIS ====== */
+function criarCoracao(element) {
+  const rect = element.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
   const coracao = document.createElement('div');
-  coracao.className = 'coracao-flutuante';
-  coracao.innerHTML = '❤️';
+  coracao.className = 'coracao';
+  coracao.style.left = `${x - 15}px`;
+  coracao.style.top = `${y - 15}px`;
+  coracao.style.animation = `flutuar ${4 + Math.random() * 2}s ease-in-out forwards`;
   document.body.appendChild(coracao);
-  const x = elemento ? elemento.getBoundingClientRect().left + elemento.offsetWidth / 2 : Math.random() * window.innerWidth;
-  const y = elemento ? elemento.getBoundingClientRect().top + elemento.offsetHeight / 2 : Math.random() * window.innerHeight;
-  coracao.style.left = `${x}px`;
-  coracao.style.top = `${y}px`;
-  setTimeout(() => { coracao.remove(); }, 2000);
+  setTimeout(() => coracao.remove(), 6000);
+}
+function criarCoracaoNoClique(e) {
+  if (!e.target.closest('button') && !e.target.closest('.secret-message')) {
+    criarCoracao({ getBoundingClientRect: () => ({ left: e.clientX, top: e.clientY, width: 0, height: 0 }) });
+  }
+}
+function criarPetala() {
+  const p = document.createElement('div');
+  p.className = 'petala';
+  p.style.left = `${Math.random() * 100}vw`;
+  p.style.animation = `cair ${5 + Math.random() * 10}s linear forwards`;
+  p.style.opacity = `${0.3 + Math.random() * 0.7}`;
+  p.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random()})`;
+  efeitosContainer.appendChild(p);
+  setTimeout(() => p.remove(), 15000);
 }
 function criarEfeitosRomanticos() {
-  const efeitos = ['💖', '✨', '💕', '💘', '💓', '💝', '💞'];
-  for (let i = 0; i < 15; i++) {
-    setTimeout(() => {
-      const efeito = document.createElement('div');
-      efeito.className = 'efeito-romantico';
-      efeito.innerHTML = efeitos[Math.floor(Math.random() * efeitos.length)];
-      efeito.style.left = `${Math.random() * 100}%`;
-      efeito.style.top = `${Math.random() * 100}%`;
-      efeito.style.animationDuration = `${Math.random() * 3 + 2}s`;
-      efeitosContainer.appendChild(efeito);
-      setTimeout(() => { efeito.remove(); }, 5000);
-    }, i * 300);
-  }
+  for (let i = 0; i < 15; i++) setTimeout(criarPetala, i * 500);
+  setInterval(criarPetala, 3000);
 }
 
-/* ====== MENSAGENS ====== */
+/* ====== MENSAGENS / NOTIFICAÇÕES ====== */
 function mostrarMensagemSecreta() {
   const mensagens = [
-    "Você é a pessoa mais incrível que já conheci!",
-    "Cada momento contigo é especial 💖",
-    "Seu sorriso ilumina meus dias ☀️",
-    "Obrigado por ser quem você é!",
-    "Estou sempre pensando em você...",
-    "Você me faz tão feliz! 😊",
-    "Nada se compara ao que sinto por você ❤️",
-    "Você é minha música favorita 🎵"
+    "Você é especial para mim","Gosto muito de você","Cada day com você é único",
+    "Seu sorriso me alegra","Você faz meus dias melhores","Meu coração é seu ❤️",
+    "Sinto sua falta mesmo quando você está perto","Você é meu pensamento favorito",
+    "Amo o jeito que você me olha","Seu abraço é meu lugar favorito","Você me completa",
+    "Nada se compara ao seu carinho","Me apaixono mais a cada dia","Você é a melhor parte do meu dia",
+    "Seu amor me transformou","Amo nossa conexão","Você me inspira a ser melhor",
+    "Seu cheiro é meu aroma favorito","Amo nossa conversa sem fim","Você é lindo(a) por dentro e por fora",
+    "Me sinto em casa no seu colo","Seu riso é minha música favorita","Você me faz a pessoa mais sortuda",
+    "Amo nossos momentos juntos","Você é meu sonho realizado","Seu amor me aquece a alma",
+    "Amo cada detalhe seu","Você é minha paz","Meu amor por você é eterno","Você é minha estrela-guia ⭐",
+    "Amo como você me entende","Seu toque me eletriza","Você é resposta das minhas preces",
+    "Me perco no seu olhar","Você é pura magia ✨","Amo nossa história","Seu amor me cura",
+    "Você é meu porto seguro","Me apaixono pelo seu jeito","Você é tudo que sempre quis",
+    "Nosso amor é lindo","Você me faz feliz","Amo te amar","Você é meu sempre 💫"
   ];
-  const mensagem = mensagens[Math.floor(Math.random() * mensagens.length)];
+  const mensagem = mensagens[Math.floor(Math.random() * mensagens.length)] + " ❤️";
   mostrarNotificacao(mensagem);
 }
-function mostrarNotificacao(texto) {
-  const notificacao = document.createElement('div');
-  notificacao.className = 'notificacao';
-  notificacao.textContent = texto;
-  document.body.appendChild(notificacao);
-  setTimeout(() => { notificacao.classList.add('show'); }, 10);
-  setTimeout(() => { notificacao.classList.remove('show'); setTimeout(() => { notificacao.remove(); }, 300); }, 3000);
+function mostrarNotificacao(mensagem) {
+  const n = document.createElement('div');
+  n.className = 'notificacao-mensagem';
+  n.textContent = mensagem;
+  document.body.appendChild(n);
+  setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 500); }, 2000);
 }
 function mostrarAvisoAutoplay() {
-  if (isIOS && !isStandalone) {
-    mostrarNotificacao("Para melhor experiência, adicione este app à sua tela inicial 📱");
-  }
+  const aviso = document.createElement('div');
+  aviso.className = 'aviso-autoplay';
+  aviso.textContent = 'Clique em qualquer lugar para ativar a reprodução automática';
+  document.body.appendChild(aviso);
+  setTimeout(() => { aviso.style.opacity = '0'; setTimeout(() => aviso.remove(), 500); }, 3000);
 }
 
-/* ====== INICIAR APLICAÇÃO ====== */
-document.addEventListener('DOMContentLoaded', init);
+/* ====== ERROS ÁUDIO ====== */
+function tratarErroAudio() {
+  console.error("Erro no áudio");
+  setTimeout(proximaMusica, 1000);
+}
 
-// Adicionar suporte para teclas de mídia
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space') {
-    e.preventDefault();
-    togglePlay();
-  } else if (e.code === 'ArrowRight') {
-    proximaMusica();
-  } else if (e.code === 'ArrowLeft') {
-    musicaAnterior();
-  }
-});
+/* ====== START ====== */
+window.addEventListener('load', init);

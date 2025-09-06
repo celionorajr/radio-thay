@@ -205,16 +205,15 @@ function init() {
   renderMusicList();
   criarEfeitosRomanticos();
   mostrarAvisoAutoplay();
-  iniciarServiceWorker();
 
-  // Adicionar detector de visibilidade
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  
-  // Configurar Media Session para melhor controle em segundo plano
-  setupMediaSession();
-
-  // Iniciar keep-alive para reprodução em segundo plano
-  startKeepAlive();
+  if (!isIOS) {
+    iniciarServiceWorker();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    setupMediaSession();
+    startKeepAlive();
+  } else {
+    console.log("iOS detectado – executando em modo simplificado (sem AudioContext/keepAlive)");
+  }
 
   // restaurar preferências
   const savedMode = localStorage.getItem('modoAleatorio');
@@ -231,37 +230,35 @@ function init() {
   // pré-carregar próxima música
   precarregarProximaMusica();
 
-  // Inicializar AudioContext sob gesto do usuário
-  const once = () => { initAudioContext(); document.removeEventListener('click', once); document.removeEventListener('touchend', once); };
-  document.addEventListener('click', once, { passive: true });
-  document.addEventListener('touchend', once, { passive: true });
+  // Inicializar AudioContext sob gesto do usuário (apenas Android/desktop)
+  if (!isIOS) {
+    const once = () => { initAudioContext(); document.removeEventListener('click', once); document.removeEventListener('touchend', once); };
+    document.addEventListener('click', once, { passive: true });
+    document.addEventListener('touchend', once, { passive: true });
+  }
 }
 
 function initAudioContext() {
   if (audioContextInitialized) return;
   const Ctx = window.AudioContext || window.webkitAudioContext;
-  try {
-    if (Ctx) {
+  if (!isIOS && Ctx) {
+    try {
       const ctx = new Ctx();
       const src = ctx.createMediaElementSource(audio);
       src.connect(ctx.destination);
-    }
-  } catch {}
+    } catch {}
+  }
   audioContextInitialized = true;
 }
 
-/* ====== CONTROLE DE VISIBILIDADE (SEGUNDO PLANO) ====== */
+/* ====== CONTROLE DE VISIBILIDADE (SEGUNDO PLANO – apenas Android/desktop) ====== */
 function handleVisibilityChange() {
   if (document.hidden) {
     console.log("App em segundo plano");
     appInBackground = true;
-    
-    // Tentar manter a reprodução ativa
     if (isPlaying) {
-      // Forçar uma reprodução quando entrar em segundo plano
       setTimeout(() => {
         if (audio.paused && isPlaying) {
-          console.log("Tentando retomar reprodução em segundo plano");
           audio.play().catch(e => console.log("Erro ao reproduzir em segundo plano:", e));
         }
       }, 300);
@@ -272,45 +269,14 @@ function handleVisibilityChange() {
   }
 }
 
-/* ====== MEDIA SESSION (CONTROLES EXTERNOS) ====== */
-function setupMediaSession() {
-  if ('mediaSession' in navigator) {
-    try {
-      // Configurar handlers para controles externos (notificação, fones de ouvido, etc.)
-      navigator.mediaSession.setActionHandler('play', () => {
-        audio.play().catch(e => console.error("Erro ao reproduzir via mediaSession:", e));
-      });
-      
-      navigator.mediaSession.setActionHandler('pause', () => {
-        audio.pause();
-      });
-      
-      navigator.mediaSession.setActionHandler('previoustrack', () => {
-        musicaAnterior();
-      });
-      
-      navigator.mediaSession.setActionHandler('nexttrack', () => {
-        proximaMusica();
-      });
-      
-      // Atualizar a posição periodicamente
-      setInterval(syncMediaSessionPosition, 1000);
-    } catch (error) {
-      console.error("Erro ao configurar mediaSession:", error);
-    }
-  }
-}
-
-/* ====== KEEP-ALIVE PARA SEGUNDO PLANO ====== */
+/* ====== KEEP-ALIVE PARA SEGUNDO PLANO (apenas Android/desktop) ====== */
 function startKeepAlive() {
   if (keepAliveInterval) clearInterval(keepAliveInterval);
-  
   keepAliveInterval = setInterval(() => {
     if (appInBackground && isPlaying && audio.paused) {
-      console.log("Keep-alive: tentando retomar reprodução em segundo plano");
       audio.play().catch(e => console.log("Keep-alive não conseguiu retomar:", e));
     }
-  }, 30000); // Tentar a cada 30 segundos
+  }, 30000);
 }
 
 /* ====== SERVICE WORKER ====== */

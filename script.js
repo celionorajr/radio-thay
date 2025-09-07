@@ -178,49 +178,96 @@ const vinylHeart = document.querySelector('.vinyl-heart');
 
 /* ====== INICIALIZAÇÃO ====== */
 function init() {
+  ensurePlaySvg();
   setupEventListeners();
   carregarMusica(indiceAtual);
   renderMusicList();
 }
 
+/* ====== UTIL: garante que o botão de play tenha um SVG dentro ====== */
+function ensurePlaySvg() {
+  if (!playBtn) return;
+  if (!playBtn.querySelector('svg')) {
+    playBtn.innerHTML = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`;
+  }
+}
+
 /* ====== CARREGAR MÚSICA ====== */
 function carregarMusica(indice) {
+  if (indice < 0 || indice >= musicas.length) return;
   indiceAtual = indice;
   const musica = musicas[indice];
 
-  document.getElementById('titulo').textContent = musica.titulo;
-  document.getElementById('artista').textContent = musica.artista;
-  document.getElementById('imagem-musica').src = musica.imagem;
+  const tituloEl = document.getElementById('titulo');
+  const artistaEl = document.getElementById('artista');
+  const imgEl = document.getElementById('imagem-musica');
 
-  fim.textContent = musica.duracao;
+  if (tituloEl) tituloEl.textContent = musica.titulo;
+  if (artistaEl) artistaEl.textContent = musica.artista;
+  if (imgEl) {
+    imgEl.src = musica.imagem;
+    imgEl.alt = `Capa: ${musica.titulo}`;
+  }
+
+  fim.textContent = musica.duracao || '0:00';
   barraProgresso.value = 0;
   inicio.textContent = '0:00';
 
   fraseElement.textContent = '';
-  digitarFrase(fraseElement, musica.frase);
+  digitarFrase(fraseElement, musica.frase || '');
 
   audio.src = musica.audio;
   audio.load();
 
   updateActiveMusicInList();
+  /* ====== ATUALIZAR CONTROLE DE MÍDIA (tela bloqueada / centro de controle) ====== */
+	if ('mediaSession' in navigator) {
+	  const musica = musicas[indiceAtual];
+	  navigator.mediaSession.metadata = new MediaMetadata({
+		title: musica.titulo,
+		artist: musica.artista,
+		album: "Rádio Thay 💖",
+		artwork: [
+		  { src: musica.imagem, sizes: '96x96', type: 'image/png' },
+		  { src: musica.imagem, sizes: '192x192', type: 'image/png' },
+		  { src: musica.imagem, sizes: '512x512', type: 'image/png' }
+		]
+	  });
+
+	  navigator.mediaSession.setActionHandler("play", () => { audio.play(); });
+	  navigator.mediaSession.setActionHandler("pause", () => { audio.pause(); });
+	  navigator.mediaSession.setActionHandler("previoustrack", () => { musicaAnterior(); });
+	  navigator.mediaSession.setActionHandler("nexttrack", () => { proximaMusica(); });
+	}
+
 }
 
 /* ====== DIGITAR FRASE ====== */
 function digitarFrase(element, text, i = 0) {
+  if (!element) return;
   clearTimeout(typingInterval);
   if (i < text.length) {
     element.textContent = text.substring(0, i + 1);
     typingInterval = setTimeout(() => digitarFrase(element, text, i + 1), 45);
+  } else {
+    // fim do typing
   }
 }
 
 /* ====== CONTROLES ====== */
 function togglePlay() {
+  // animar coracao no clique do play
+  criarCoracao(playBtn);
+
   if (isPlaying) {
     audio.pause();
   } else {
     if (!audio.src) carregarMusica(indiceAtual);
-    audio.play().catch(() => {});
+    audio.play().catch((e) => {
+      // silencia erros de autoplay; usuário deve interagir para liberar em alguns navegadores
+      console.debug("play() falhou:", e);
+      mostrarNotificacao("Toque novamente para começar a reprodução.");
+    });
   }
 }
 
@@ -232,16 +279,16 @@ function proximaMusica() {
     novoIndice = (indiceAtual + 1) % musicas.length;
   }
   carregarMusica(novoIndice);
-  audio.play().catch(() => {});
+  audio.play().catch(()=>{});
 }
 
 function musicaAnterior() {
   indiceAtual = (indiceAtual - 1 + musicas.length) % musicas.length;
   carregarMusica(indiceAtual);
-  audio.play().catch(() => {});
+  audio.play().catch(()=>{});
 }
 
-/* ====== ALEATÓRIO ====== */
+/* ====== ALEATÓRIO (inteligente) ====== */
 function escolherMusicaAleatoria() {
   let disponiveis = musicas.map((_, i) => i).filter(i => !historicoAleatorio.includes(i));
   if (disponiveis.length === 0) {
@@ -251,62 +298,92 @@ function escolherMusicaAleatoria() {
   const pesos = disponiveis.map(i => (musicas[i].favorita ? 1.25 : 1));
   const totalPeso = pesos.reduce((a, b) => a + b, 0);
   let r = Math.random() * totalPeso, acc = 0, escolhido = disponiveis[0];
-  for (let i = 0; i < disponiveis.length; i++) {
-    acc += pesos[i];
-    if (r <= acc) { escolhido = disponiveis[i]; break; }
+  for (let k = 0; k < disponiveis.length; k++) {
+    acc += pesos[k];
+    if (r <= acc) { escolhido = disponiveis[k]; break; }
   }
   historicoAleatorio.push(escolhido);
   if (historicoAleatorio.length > MAX_HISTORICO) historicoAleatorio.shift();
   return escolhido;
 }
-
 function toggleModoAleatorio() {
   modoAleatorio = !modoAleatorio;
-  aleatorioBtn.classList.toggle('active', modoAleatorio);
+  if (aleatorioBtn) aleatorioBtn.classList.toggle('active', modoAleatorio);
+  mostrarNotificacao(modoAleatorio ? 'Modo aleatório ativado' : 'Modo aleatório desativado');
 }
 
 /* ====== EVENT LISTENERS ====== */
 function setupEventListeners() {
-  // carta secreta
-  const secret = document.querySelector('.secret-message');
+  // carta / mensagem secreta (procura pelos dois seletores comuns)
+  const secret = document.querySelector('.secret-message') || document.querySelector('.mensagem-secreta');
   if (secret) {
     secret.addEventListener('click', () => {
+      // abrir a carta visualmente (se houver elementos .carta-fechada / .carta-aberta)
       const cartaFechada = document.querySelector('.carta-fechada');
       const cartaAberta = document.querySelector('.carta-aberta');
       if (cartaFechada && cartaAberta) {
         cartaFechada.style.display = 'none';
         cartaAberta.style.display = 'block';
+        // mostrar mensagem tipo toast
+        mostrarMensagemSecreta();
         setTimeout(() => {
           cartaAberta.style.display = 'none';
           cartaFechada.style.display = 'block';
         }, 2000);
+      } else {
+        // fallback: só mostra mensagem se estrutura não existir
+        mostrarMensagemSecreta();
       }
     });
   }
 
-  playBtn.addEventListener('click', togglePlay);
-  anteriorBtn.addEventListener('click', musicaAnterior);
-  proximoBtn.addEventListener('click', proximaMusica);
-  aleatorioBtn.addEventListener('click', toggleModoAleatorio);
-  listaBtn.addEventListener('click', toggleListaMusicas);
-  closeListBtn.addEventListener('click', toggleListaMusicas);
+  if (playBtn) playBtn.addEventListener('click', togglePlay);
+  if (anteriorBtn) anteriorBtn.addEventListener('click', musicaAnterior);
+  if (proximoBtn) proximoBtn.addEventListener('click', proximaMusica);
+  if (aleatorioBtn) aleatorioBtn.addEventListener('click', toggleModoAleatorio);
+  if (listaBtn) listaBtn.addEventListener('click', toggleListaMusicas);
+  if (closeListBtn) closeListBtn.addEventListener('click', toggleListaMusicas);
 
-  audio.addEventListener('timeupdate', atualizarProgresso);
-  audio.addEventListener('loadedmetadata', carregarDuracao);
-  audio.addEventListener('play', handlePlay);
-  audio.addEventListener('pause', handlePause);
-  audio.addEventListener('ended', handleEnded);
+  if (audio) {
+    audio.addEventListener('timeupdate', atualizarProgresso);
+    audio.addEventListener('loadedmetadata', carregarDuracao);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', () => { console.debug("Erro no elemento audio"); });
+  }
 
-  barraProgresso.addEventListener('input', seekAudio);
-  searchInput.addEventListener('input', filtrarMusicas);
+  if (barraProgresso) barraProgresso.addEventListener('input', seekAudio);
+  if (searchInput) searchInput.addEventListener('input', filtrarMusicas);
+
+  // clique em qualquer lugar (fora dos botões) cria coracao flutuante
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('button') && !e.target.closest('.secret-message') && !e.target.closest('.mensagem-secreta')) {
+      criarCoracao(e.clientX, e.clientY);
+    }
+  });
+
+  // responsividade (ajuste de altura) opcional se usar CSS com --vh
+  window.addEventListener('resize', ajustarAltura);
+  window.addEventListener('orientationchange', ajustarAltura);
+  window.addEventListener('load', ajustarAltura);
+}
+
+/* ====== AJUSTE DE ALTURA (mobile) ====== */
+function ajustarAltura() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  const container = document.querySelector('.player-container');
+  if (container) container.style.minHeight = 'calc(var(--vh, 1vh) * 100)';
 }
 
 /* ====== LISTA ====== */
 function toggleListaMusicas() {
-  listaMusicas.classList.toggle('show');
+  if (listaMusicas) listaMusicas.classList.toggle('show');
 }
 
 function renderMusicList() {
+  if (!listaContainer) return;
   listaContainer.innerHTML = '';
   musicas.forEach((musica, index) => {
     const item = document.createElement('div');
@@ -317,7 +394,7 @@ function renderMusicList() {
         <h4>${musica.titulo}</h4>
         <p>${musica.artista}</p>
       </div>
-      <div class="music-item-duration">${musica.duracao}</div>
+      <div class="music-item-duration">${musica.duracao || ''}</div>
     `;
     item.addEventListener('click', () => {
       carregarMusica(index);
@@ -327,14 +404,13 @@ function renderMusicList() {
     listaContainer.appendChild(item);
   });
 }
-
 function updateActiveMusicInList() {
   document.querySelectorAll('.music-item').forEach((item, index) => {
     item.classList.toggle('active', index === indiceAtual);
   });
 }
-
 function filtrarMusicas() {
+  if (!searchInput) return;
   const termo = (searchInput.value || '').toLowerCase();
   document.querySelectorAll('.music-item').forEach((item, index) => {
     const m = musicas[index];
@@ -345,37 +421,173 @@ function filtrarMusicas() {
 
 /* ====== PROGRESSO ====== */
 function atualizarProgresso() {
+  if (!audio || isNaN(audio.duration)) return;
   barraProgresso.max = audio.duration;
   barraProgresso.value = audio.currentTime;
   inicio.textContent = formatarTempo(audio.currentTime);
 }
 function carregarDuracao() {
+  if (!audio || isNaN(audio.duration)) {
+    fim.textContent = '0:00';
+    return;
+  }
   barraProgresso.max = audio.duration;
   fim.textContent = formatarTempo(audio.duration);
 }
 function seekAudio() {
+  if (!audio) return;
   audio.currentTime = Number(barraProgresso.value || 0);
   inicio.textContent = formatarTempo(audio.currentTime);
 }
 function formatarTempo(seg) {
+  if (!Number.isFinite(seg)) return '0:00';
   const m = Math.floor(seg / 60);
   const s = Math.floor(seg % 60);
   return `${m}:${s < 10 ? '0' + s : s}`;
 }
 
-/* ====== ESTADO ====== */
+/* ====== ESTADO / UI (SVG play/pause + vinylHeart) ====== */
 function handlePlay() {
   isPlaying = true;
-  playBtn.innerHTML = '⏸️';
+  updateUI();
   if (vinylHeart) vinylHeart.classList.add('playing');
 }
 function handlePause() {
   isPlaying = false;
-  playBtn.innerHTML = '▶️';
+  updateUI();
   if (vinylHeart) vinylHeart.classList.remove('playing');
 }
 function handleEnded() {
   proximaMusica();
+}
+
+function updateUI() {
+  ensurePlaySvg();
+  const playIcon = playBtn.querySelector('svg');
+  if (!playIcon) return;
+
+  const path = playIcon.querySelector('path') || document.createElementNS('http://www.w3.org/2000/svg','path');
+  if (!playIcon.querySelector('path')) playIcon.appendChild(path);
+
+  if (isPlaying) {
+    // pause icon (dois retângulos)
+    path.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z');
+    playBtn.classList.add('playing');
+  } else {
+    // play triangle
+    path.setAttribute('d', 'M8 5v14l11-7z');
+    playBtn.classList.remove('playing');
+  }
+}
+
+/* ====== CORAÇÕES VISUAIS ====== */
+/*
+  criarCoracao pode receber:
+    - um elemento (HTMLElement) -> posiciona no centro do elemento
+    - duas coordenadas (x, y) -> posiciona na posição clicada
+*/
+function criarCoracao(a, b) {
+  let x, y;
+  if (typeof a === 'number' && typeof b === 'number') {
+    x = a; y = b;
+  } else if (a && typeof a.getBoundingClientRect === 'function') {
+    const rect = a.getBoundingClientRect();
+    x = rect.left + rect.width / 2;
+    y = rect.top + rect.height / 2;
+  } else {
+    // centro da tela como fallback
+    x = window.innerWidth / 2;
+    y = window.innerHeight / 2;
+  }
+
+  const coracao = document.createElement('div');
+  coracao.className = 'coracao';
+  coracao.textContent = '❤';
+  // estilos inline para garantir animação mesmo sem CSS externo
+  coracao.style.position = 'fixed';
+  coracao.style.left = `${x - 12}px`;
+  coracao.style.top = `${y - 12}px`;
+  coracao.style.fontSize = '20px';
+  coracao.style.pointerEvents = 'none';
+  coracao.style.zIndex = 9999;
+  coracao.style.opacity = '1';
+  coracao.style.transition = 'transform 5s ease-out, opacity 5s ease-out';
+  document.body.appendChild(coracao);
+
+  // forçar layout e iniciar animação
+  requestAnimationFrame(() => {
+    coracao.style.transform = `translateY(-140px) scale(${1 + Math.random() * 0.6}) rotate(${(Math.random()-0.5)*40}deg)`;
+    coracao.style.opacity = '0';
+  });
+
+  setTimeout(() => {
+    coracao.remove();
+  }, 5200);
+}
+
+/* ====== PETALAS (efeito romântico) ====== */
+function criarPetala() {
+  const petala = document.createElement('div');
+  petala.className = 'petala';
+  petala.style.position = 'fixed';
+  petala.style.left = `${Math.random() * 100}vw`;
+  petala.style.top = `-10vh`;
+  petala.style.opacity = `${0.3 + Math.random() * 0.7}`;
+  petala.style.transform = `scale(${0.5 + Math.random()}) rotate(${Math.random()*360}deg)`;
+  petala.style.pointerEvents = 'none';
+  petala.style.zIndex = 5;
+  petala.style.transition = `transform ${6 + Math.random()*8}s linear, top ${6 + Math.random()*8}s linear, opacity ${6 + Math.random()*8}s linear`;
+  petala.textContent = ''; // se quiser imagem, ajustar aqui
+  document.body.appendChild(petala);
+
+  // animar para baixo
+  requestAnimationFrame(() => {
+    petala.style.top = `${100 + Math.random() * 30}vh`;
+    petala.style.transform = `translateY(${100 + Math.random()*20}vh) scale(${0.5 + Math.random()}) rotate(${Math.random()*720}deg)`;
+    petala.style.opacity = '0';
+  });
+
+  setTimeout(() => petala.remove(), 16000);
+}
+// opcional: criar algumas petalas no inicio
+for (let i = 0; i < 8; i++) setTimeout(criarPetala, i * 700);
+
+/* ====== MENSAGENS / TOASTS ====== */
+function mostrarMensagemSecreta() {
+  const mensagens = [
+    "Você é especial para mim","Gosto muito de você","Cada dia com você é único",
+    "Seu sorriso me alegra","Você faz meus dias melhores","Meu coração é seu ❤️",
+    "Sinto sua falta mesmo quando você está perto","Você é meu pensamento favorito",
+    "Amo o jeito que você me olha","Seu abraço é meu lugar favorito","Você me completa",
+    "Nada se compara ao seu carinho","Me apaixono mais a cada dia","Você é a melhor parte do meu dia",
+    "Seu amor me transformou","Amo nossa conexão","Você me inspira a ser melhor",
+    "Seu cheiro é meu aroma favorito","Amo nossa conversa sem fim","Você é lindo(a) por dentro e por fora"
+  ];
+  const mensagem = mensagens[Math.floor(Math.random() * mensagens.length)] + " ❤️";
+  mostrarNotificacao(mensagem);
+}
+
+function mostrarNotificacao(mensagem, duracao = 2400) {
+  const n = document.createElement('div');
+  n.className = 'notificacao-mensagem';
+  n.textContent = mensagem;
+  // estilos inline para garantir visual mesmo sem CSS
+  n.style.position = 'fixed';
+  n.style.left = '50%';
+  n.style.bottom = '20px';
+  n.style.transform = 'translateX(-50%)';
+  n.style.background = 'rgba(0,0,0,0.75)';
+  n.style.color = '#fff';
+  n.style.padding = '10px 14px';
+  n.style.borderRadius = '10px';
+  n.style.zIndex = 99999;
+  n.style.fontSize = '14px';
+  n.style.boxShadow = '0 6px 18px rgba(0,0,0,0.25)';
+  n.style.opacity = '1';
+  n.style.transition = 'opacity 400ms ease';
+
+  document.body.appendChild(n);
+  setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 420); }, duracao);
 }
 
 /* ====== START ====== */

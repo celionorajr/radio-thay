@@ -148,7 +148,18 @@ const musicas = [
   { titulo: "Is This Love", artista: "Whitesnake", imagem: "assets/whitesnake-is-this-love.png",
   frase: "Este amor é intenso, real e veio para ficar. Não é dúvida, é certeza. Não é paixão, é destino. É você e eu, para sempre. ❤️‍🔥",
   audio: "assets/whitesnake-is-this-love.mp3", duracao: "4:44", favorita: true
+  },
+  
+  {  titulo: "A Noite Mais Linda Do Mundo (A Felicidade)", artista: "Odair José", imagem: "assets/odair-jose-a-noite-mais-linda-do-mundo.png",
+  frase: "A noite mais linda do mundo não é feita de estrelas, mas sim do seu abraço, do seu sorriso e da felicidade de te ter ao meu lado. 🌙💫",
+  audio: "assets/odair-jose-a-noite-mais-linda-do-mundo.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Planta sem Raiz", artista: "Odair José", imagem: "assets/odair-jose-planta-sem-raiz.png",
+  frase: "Longe de você, sou como planta sem raiz: não me sustento, não cresço, não vivo. Só sobrevivo. Preciso de você para me completar. 🌿💔",
+  audio: "assets/odair-jose-planta-sem-raiz.mp3", duracao: "3:20", favorita: true
   }
+  
 ];
 
 /* ====== VARIÁVEIS ====== */

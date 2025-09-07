@@ -155,6 +155,9 @@ const musicas = [
 let indiceAtual = 0;
 let isPlaying = false;
 let typingInterval;
+let modoAleatorio = false;
+let historicoAleatorio = [];
+const MAX_HISTORICO = 3;
 
 /* ====== ELEMENTOS DOM ====== */
 const audio = document.getElementById('audio');
@@ -222,8 +225,13 @@ function togglePlay() {
 }
 
 function proximaMusica() {
-  indiceAtual = (indiceAtual + 1) % musicas.length;
-  carregarMusica(indiceAtual);
+  let novoIndice;
+  if (modoAleatorio) {
+    novoIndice = escolherMusicaAleatoria();
+  } else {
+    novoIndice = (indiceAtual + 1) % musicas.length;
+  }
+  carregarMusica(novoIndice);
   audio.play().catch(() => {});
 }
 
@@ -233,15 +241,55 @@ function musicaAnterior() {
   audio.play().catch(() => {});
 }
 
+/* ====== ALEATÓRIO ====== */
+function escolherMusicaAleatoria() {
+  let disponiveis = musicas.map((_, i) => i).filter(i => !historicoAleatorio.includes(i));
+  if (disponiveis.length === 0) {
+    historicoAleatorio = [];
+    disponiveis = musicas.map((_, i) => i);
+  }
+  const pesos = disponiveis.map(i => (musicas[i].favorita ? 1.25 : 1));
+  const totalPeso = pesos.reduce((a, b) => a + b, 0);
+  let r = Math.random() * totalPeso, acc = 0, escolhido = disponiveis[0];
+  for (let i = 0; i < disponiveis.length; i++) {
+    acc += pesos[i];
+    if (r <= acc) { escolhido = disponiveis[i]; break; }
+  }
+  historicoAleatorio.push(escolhido);
+  if (historicoAleatorio.length > MAX_HISTORICO) historicoAleatorio.shift();
+  return escolhido;
+}
+
+function toggleModoAleatorio() {
+  modoAleatorio = !modoAleatorio;
+  aleatorioBtn.classList.toggle('active', modoAleatorio);
+}
+
 /* ====== EVENT LISTENERS ====== */
 function setupEventListeners() {
+  // carta secreta
+  const secret = document.querySelector('.secret-message');
+  if (secret) {
+    secret.addEventListener('click', () => {
+      const cartaFechada = document.querySelector('.carta-fechada');
+      const cartaAberta = document.querySelector('.carta-aberta');
+      if (cartaFechada && cartaAberta) {
+        cartaFechada.style.display = 'none';
+        cartaAberta.style.display = 'block';
+        setTimeout(() => {
+          cartaAberta.style.display = 'none';
+          cartaFechada.style.display = 'block';
+        }, 2000);
+      }
+    });
+  }
+
   playBtn.addEventListener('click', togglePlay);
   anteriorBtn.addEventListener('click', musicaAnterior);
   proximoBtn.addEventListener('click', proximaMusica);
   aleatorioBtn.addEventListener('click', toggleModoAleatorio);
   listaBtn.addEventListener('click', toggleListaMusicas);
   closeListBtn.addEventListener('click', toggleListaMusicas);
-  listaMusicas.addEventListener('click', (e) => { if (e.target === listaMusicas) toggleListaMusicas(); });
 
   audio.addEventListener('timeupdate', atualizarProgresso);
   audio.addEventListener('loadedmetadata', carregarDuracao);
@@ -318,13 +366,11 @@ function formatarTempo(seg) {
 /* ====== ESTADO ====== */
 function handlePlay() {
   isPlaying = true;
-  playBtn.classList.add('playing');
   playBtn.innerHTML = '⏸️';
   if (vinylHeart) vinylHeart.classList.add('playing');
 }
 function handlePause() {
   isPlaying = false;
-  playBtn.classList.remove('playing');
   playBtn.innerHTML = '▶️';
   if (vinylHeart) vinylHeart.classList.remove('playing');
 }

@@ -168,6 +168,17 @@ const musicas = [
   { titulo: "I Wanna Be Yours", artista: "Arctic Monkeys", imagem: "assets/arctic-monkeys-i-wanna-be-yours.png",
   frase: "Não quero ser só mais um na sua vida. Quero ser seu porto seguro, seu café quente de manhã, seu cobertor no frio. Quero ser seu. Ponto. 🖤",
   audio: "assets/arctic-monkeys-i-wanna-be-yours.mp3", duracao: "3:04", favorita: true
+  },
+  
+  { titulo: "Something", artista: "The Beatles", imagem: "assets/beatles-something.png",
+  frase: "Há algo no seu jeito que me atrai como nenhum outro. Não sei explicar, não preciso – só sei que quero viver ao seu lado para sempre. ✨",
+  audio: "assets/beatles-something.mp3", duracao: "3:03", favorita: true
+  },
+  
+  {
+  titulo: "Love Gun", artista: "KISS", imagem: "assets/kiss-love-gun.png",
+  frase: "Meu amor por você não é delicado – é intenso, quente e cheio de atitude. Como um tiro certeiro no alvo do coração. 💘🔫",
+  audio: "assets/kiss-love-gun.mp3", duracao: "3:18", favorita: true
   }
   
 ];

@@ -163,6 +163,11 @@ const musicas = [
   { titulo: "Can't Help Falling in Love", artista: "Elvis Presley", imagem: "assets/elvis-cant-help-falling-in-love.png",
   frase: "Não foi uma escolha, foi um destino. Meu coração simplesmente se rendeu ao seu, naturalmente, como um rio que flui para o mar. 🌊💙",
   audio: "assets/elvis-cant-help-falling-in-love.mp3", duracao: "3:00", favorita: true
+  },
+  
+  { titulo: "I Wanna Be Yours", artista: "Arctic Monkeys", imagem: "assets/arctic-monkeys-i-wanna-be-yours.png",
+  frase: "Não quero ser só mais um na sua vida. Quero ser seu porto seguro, seu café quente de manhã, seu cobertor no frio. Quero ser seu. Ponto. 🖤",
+  audio: "assets/arctic-monkeys-i-wanna-be-yours.mp3", duracao: "3:04", favorita: true
   }
   
 ];

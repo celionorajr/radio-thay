@@ -158,6 +158,11 @@ const musicas = [
   { titulo: "Planta sem Raiz", artista: "Odair José", imagem: "assets/odair-jose-planta-sem-raiz.png",
   frase: "Longe de você, sou como planta sem raiz: não me sustento, não cresço, não vivo. Só sobrevivo. Preciso de você para me completar. 🌿💔",
   audio: "assets/odair-jose-planta-sem-raiz.mp3", duracao: "3:20", favorita: true
+  },
+
+  { titulo: "Can't Help Falling in Love", artista: "Elvis Presley", imagem: "assets/elvis-cant-help-falling-in-love.png",
+  frase: "Não foi uma escolha, foi um destino. Meu coração simplesmente se rendeu ao seu, naturalmente, como um rio que flui para o mar. 🌊💙",
+  audio: "assets/elvis-cant-help-falling-in-love.mp3", duracao: "3:00", favorita: true
   }
   
 ];

@@ -179,6 +179,30 @@ const musicas = [
   titulo: "Love Gun", artista: "KISS", imagem: "assets/kiss-love-gun.png",
   frase: "Meu amor por você não é delicado – é intenso, quente e cheio de atitude. Como um tiro certeiro no alvo do coração. 💘🔫",
   audio: "assets/kiss-love-gun.mp3", duracao: "3:18", favorita: true
+  },
+  
+  { titulo: "All for Love", artista: "Bryan Adams, Rod Stewart & Sting", imagem: "assets/bryan-adams-rod-stewart-sting-all-for-love.png",
+  frase: "Por você, eu enfrentaria qualquer desafio, cruzaria oceanos, desafiaria o mundo. Porque quando se trata de nós, é tudo ou nada – e eu escolho tudo. 🌊❤️", audio: "assets/bryan-adams-rod-stewart-sting-all-for-love.mp3", duracao: "4:50", favorita: true
+  },
+  
+  { titulo: "Just One Day", artista: "BTS", imagem: "assets/bts-just-one-day.png",
+  frase: "Me dê apenas um dia com você – longe do mundo, das obrigações, do tempo. Só eu, você e a certeza de que esse dia seria eterno. 🌙✨",
+  audio: "assets/bts-just-one-day.mp3", duracao: "3:59", favorita: true
+  },
+  
+  { titulo: "Heart Attack", artista: "Chuu (LOONA)", imagem: "assets/chuu-heart-attack.png",
+  frase: "Você me deu um ataque cardíaco de tanto amor! Meu coração dispara, minha mente gira... e eu não me importo, porque é por você. 💘⚡",
+  audio: "assets/chuu-heart-attack.mp3", duracao: "3:14", favorita: true
+  },
+  
+  { titulo: "Destiny", artista: "Lovelyz", imagem: "assets/lovelyz-destiny.png",
+  frase: "Algumas histórias são escritas pelas estrelas. A nossa é uma delas. Você não foi uma escolha, foi um destino. E eu não trocaria nosso final feliz por nada. ✨📖",
+  audio: "assets/lovelyz-destiny.mp3", duracao: "3:51", favorita: true
+  },
+  
+  { titulo: "Always Somewhere", artista: "Scorpions", imagem: "assets/scorpions-always-somewhere.png",
+  frase: "Não importa a distância, o meu coração está sempre em algum lugar perto de você. Onde quer que eu vá, levo seu amor comigo. 🌍❤",
+  audio: "assets/scorpions-always-somewhere.mp3", duracao: "4:58", favorita: true
   }
   
 ];

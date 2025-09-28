@@ -203,6 +203,21 @@ const musicas = [
   { titulo: "Always Somewhere", artista: "Scorpions", imagem: "assets/scorpions-always-somewhere.png",
   frase: "Não importa a distância, o meu coração está sempre em algum lugar perto de você. Onde quer que eu vá, levo seu amor comigo. 🌍❤",
   audio: "assets/scorpions-always-somewhere.mp3", duracao: "4:58", favorita: true
+  },
+  
+  { titulo: "peach eyes", artista: "wave to earth", imagem: "assets/wave-to-earth-peach-eyes.png",
+  frase: "Seus olhos são como pêssegos: doces, suaves e cheios de luz. Eles me acalmam, me inspiram e me fazem acreditar que o amor pode ser simples assim. 🍑✨",
+  audio: "assets/wave-to-earth-peach-eyes.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Segredos", artista: "Frejat", imagem: "assets/frejat-segredos.png",
+  frase: "Entre nós não existem segredos, só verdades que guardamos a sete chaves no nosso cantinho. Meu maior medo é não ter você para dividir meus silêncios. 🤫❤",
+  audio: "assets/frejat-segredos.mp3", duracao: "4:22", favorita: true
+  },
+  
+  { titulo: "Eu Sei Que Vou Te Amar", artista: "Vinicius de Moraes & Tom Jobim", imagem: "assets/vinicius-tom-eu-sei-que-vou-te-amar.png",
+  frase: "Eu sei que vou te amar até o último segundo da minha existência. Porque nosso amor não cabe no tempo – é eterno, como a melodia que não tem fim. 🌌",
+  audio: "assets/vinicius-tom-eu-sei-que-vou-te-amar.mp3", duracao: "3:50", favorita: true
   }
   
 ];

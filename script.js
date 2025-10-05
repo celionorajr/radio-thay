@@ -218,8 +218,33 @@ const musicas = [
   { titulo: "Eu Sei Que Vou Te Amar", artista: "Vinicius de Moraes & Tom Jobim", imagem: "assets/vinicius-tom-eu-sei-que-vou-te-amar.png",
   frase: "Eu sei que vou te amar até o último segundo da minha existência. Porque nosso amor não cabe no tempo – é eterno, como a melodia que não tem fim. 🌌",
   audio: "assets/vinicius-tom-eu-sei-que-vou-te-amar.mp3", duracao: "3:50", favorita: true
-  }
+  },
   
+  { titulo: "Você", artista: "Tim Maia", imagem: "assets/tim-maia-voce.png",
+  frase: "Você não é uma opção, é uma necessidade. É a batida do meu coração, o ritmo da minha alma, a razão do meu sorriso. Não existe eu sem você. 💛",
+  audio: "assets/tim-maia-voce.mp3", duracao: "4:24", favorita: true
+  },
+  
+  { titulo: "Linda", artista: "Roupa Nova", imagem: "assets/roupa-nova-linda.png",
+  frase: "Você é linda de um jeito que vai além do espelho. É a luz que acorda meu dia, a melodia que embala meus sonhos, a poesia que eu sempre quis viver. ✨📖",
+  audio: "assets/roupa-nova-linda.mp3", duracao: "4:15", favorita: true
+  },
+
+  { titulo: "Ela É Demais", artista: "Rick & Renner", imagem: "assets/rick-renner-ela-e-demais.png",
+  frase: "Você é demais em tudo: no sorriso, no abraço, no jeito de ser. E eu tenho orgulho de dizer por aí: essa mulher maravilhosa é minha! 💃❤",
+  audio: "assets/rick-renner-ela-e-demais.mp3", duracao: "3:35", favorita: true
+  },
+
+  { titulo: "Ordinary", artista: "Alex Warren", imagem: "assets/alex-warren-ordinary.png",
+  frase: "Nosso amor não precisa de holofotes nem de grandes gestos. É na simplicidade de um abraço, na verdade de um olhar, que ele se torna extraordinário. E eu não troco isso por nada. 🌧❤",
+  audio: "assets/alex-warren-ordinary.mp3", duracao: "3:30", favorita: true
+  },
+  
+  { titulo: "Yellow", artista: "Coldplay", imagem: "assets/coldplay-yellow.png",
+  frase: "Para você, eu atravessaria o universo. Escreveria uma canção em cada estrela, pintaria o céu de amarelo e diria: você é a luz que eu sempre busquei. 💫",
+  audio: "assets/coldplay-yellow.mp3", duracao: "4:29", favorita: true
+  }
+
 ];
 
 /* ====== VARIÁVEIS ====== */

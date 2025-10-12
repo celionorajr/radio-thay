@@ -262,6 +262,11 @@ const musicas = [
   { titulo: "Cheia de Charme", artista: "Guilherme Arantes", imagem: "assets/guilherme-arantes-cheia-de-charme.png",
   frase: "Você é cheia de charme, do jeito mais puro e verdadeiro. Não é sobre pose, é sobre essência. E eu me encanto mais a cada dia com a pessoa incrível que você é. 💫",
   audio: "assets/guilherme-arantes-cheia-de-charme.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "OMG", artista: "NewJeans", imagem: "assets/newjeans-omg.png",
+  frase: "Só de te ver, meu coração diz 'OMG!'. Você me deixa sem reação, sem palavras, sem jeito... E eu adoro cada segundo disso! 💖",
+  audio: "assets/newjeans-omg.mp3", duracao: "3:32", favorita: true
   }
 
 ];

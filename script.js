@@ -243,6 +243,25 @@ const musicas = [
   { titulo: "Yellow", artista: "Coldplay", imagem: "assets/coldplay-yellow.png",
   frase: "Para você, eu atravessaria o universo. Escreveria uma canção em cada estrela, pintaria o céu de amarelo e diria: você é a luz que eu sempre busquei. 💫",
   audio: "assets/coldplay-yellow.mp3", duracao: "4:29", favorita: true
+  },
+  { titulo: "we fell in love in october", artista: "girl in red", imagem: "assets/girl-in-red-we-fell-in-love-in-october.png",
+  frase: "O outono chegou trazendo folhas secas e o seu amor. E mesmo com o frio, me sinto mais aquecido do que nunca – porque tenho você. 🧣☕", audio: "assets/girl-in-red-we-fell-in-love-in-october.mp3", duracao: "3:05", favorita: true
+  },
+  
+  { titulo: "Die With A Smile", artista: "Lady Gaga & Bruno Mars", imagem: "assets/lady-gaga-bruno-mars-die-with-a-smile.png",
+  frase: "Se um dia a vida nos der o adeus final, que seja de mãos dadas, de corações cheios e com um sorriso no rosto – porque cada instante ao seu lado valeu uma eternidade. 🌅❤",
+  audio: "assets/lady-gaga-bruno-mars-die-with-a-smile.mp3", duracao: "4:25", favorita: true
+  },
+  
+  {
+  titulo: "Pra Você Guardei o Amor", artista: "Nando Reis & Ana Cañas", imagem: "assets/nando-reis-ana-canas-pra-voce-guardei-o-amor.png",
+  frase: "Eu guardei o amor mais puro, mais verdadeiro, mais meu... para você. Porque desde sempre soube que existiria alguém como você para recebê-lo. E valeu cada segundo de espera. 💖",
+  audio: "assets/nando-reis-ana-canas-pra-voce-guardei-o-amor.mp3", duracao: "3:50", favorita: true
+  },
+  
+  { titulo: "Cheia de Charme", artista: "Guilherme Arantes", imagem: "assets/guilherme-arantes-cheia-de-charme.png",
+  frase: "Você é cheia de charme, do jeito mais puro e verdadeiro. Não é sobre pose, é sobre essência. E eu me encanto mais a cada dia com a pessoa incrível que você é. 💫",
+  audio: "assets/guilherme-arantes-cheia-de-charme.mp3", duracao: "3:45", favorita: true
   }
 
 ];

@@ -267,6 +267,31 @@ const musicas = [
   { titulo: "OMG", artista: "NewJeans", imagem: "assets/newjeans-omg.png",
   frase: "Só de te ver, meu coração diz 'OMG!'. Você me deixa sem reação, sem palavras, sem jeito... E eu adoro cada segundo disso! 💖",
   audio: "assets/newjeans-omg.mp3", duracao: "3:32", favorita: true
+  },
+  
+  { titulo: "Killin' It Girl", artista: "j-hope feat. GloRilla", imagem: "assets/jhope-killin-it-girl.png",
+  frase: "Você chega e domina o ambiente. É confiante, poderosa, dona do seu mundo. E eu não me canso de admirar como você está 'killin' it' em tudo que faz. 💃🔥",
+  audio: "assets/jhope-killin-it-girl.mp3", duracao: "2:45", favorita: true
+  },
+  
+  { titulo: "I Will Always Love You", artista: "Whitney Houston", imagem: "assets/whitney-houston-i-will-always-love-you.png",
+  frase: "Eu vou te amar para sempre. Não importa a distância, o tempo ou o destino. Você ficou marcado em mim, e levo seu amor em cada batida do meu coração. 💖",
+  audio: "assets/whitney-houston-i-will-always-love-you.mp3", duracao: "4:32", favorita: true
+  },
+  
+  { titulo: "Say Yes To Heaven", artista: "Lana Del Rey", imagem: "assets/lana-del-rey-say-yes-to-heaven.png",
+  frase: "Se o céu me perguntasse se eu te amo, eu diria 'sim' sem hesitar. Porque você é meu paraíso na Terra, minha paz, minha eternidade. 🌌",
+  audio: "assets/lana-del-rey-say-yes-to-heaven.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "All of Me", artista: "John Legend", imagem: "assets/john-legend-all-of-me.png",
+  frase: "Eu te amo com tudo que tenho e com tudo que sou. Cada detalhe, cada imperfeição, cada sonho. Você é minha história completa, meu 'all of me' pertence a você. 💞",
+  audio: "assets/john-legend-all-of-me.mp3", duracao: "4:30", favorita: true
+  },
+  
+  { titulo: "Meu Abrigo", artista: "Merlin", imagem: "assets/merlin-meu-abrigo.png",
+  frase: "Nos seus braços eu encontrei meu lugar no mundo. Você é meu abrigo nos dias de tempestade, meu porto seguro, meu lar. 🏡❤",
+  audio: "assets/merlin-meu-abrigo.mp3", duracao: "3:50", favorita: true
   }
 
 ];

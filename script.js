@@ -292,6 +292,16 @@ const musicas = [
   { titulo: "Meu Abrigo", artista: "Merlin", imagem: "assets/merlin-meu-abrigo.png",
   frase: "Nos seus braços eu encontrei meu lugar no mundo. Você é meu abrigo nos dias de tempestade, meu porto seguro, meu lar. 🏡❤",
   audio: "assets/merlin-meu-abrigo.mp3", duracao: "3:50", favorita: true
+  },
+  
+  { titulo: "Make You Feel My Love", artista: "Adele", imagem: "assets/adele-make-you-feel-my-love.png",
+  frase: "Eu faria o impossível para você sentir meu amor. Nos dias frios, nas noites escuras, eu estarei aqui – para aquecer, proteger e lembrar o quanto você é amada. 🌧️🔥",
+  audio: "assets/adele-make-you-feel-my-love.mp3", duracao: "3:32", favorita: true
+  },
+  
+  { titulo: "Dusk Till Dawn", artista: "Zayn feat. Sia", imagem: "assets/zayn-sia-dusk-till-dawn.png",
+  frase: "Do anoitecer ao amanhecer, em cada segundo, em cada respiração... eu estarei ao seu lado. Você não estará sozinha nunca mais. 🌙🌅",
+  audio: "assets/zayn-sia-dusk-till-dawn.mp3", duracao: "4:25", favorita: true
   }
 
 ];

@@ -317,6 +317,11 @@ const musicas = [
   { titulo: "Caso Sério", artista: "Rita Lee", imagem: "assets/rita-lee-caso-serio.png",
   frase: "O que sinto por você não é brincadeira, é caso sério! Todo mundo já percebeu - meu coração grita seu nome a cada batida. 💘",
   audio: "assets/rita-lee-caso-serio.mp3", duracao: "3:10", favorita: true
+  },
+  
+  { titulo: "Unchained Melody", artista: "The Righteous Brothers", imagem: "assets/righteous-brothers-unchained-melody.png",
+  frase: "O tempo pode passar, as estações mudar, mas meu amor por você permanece imutável. Como uma melodia que nunca termina, ecoa eternamente em meu coração. ⏳💙",
+  audio: "assets/righteous-brothers-unchained-melody.mp3", duracao: "3:36", favorita: true
   }
 
 

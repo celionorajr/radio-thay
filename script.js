@@ -302,7 +302,25 @@ const musicas = [
   { titulo: "Dusk Till Dawn", artista: "Zayn feat. Sia", imagem: "assets/zayn-sia-dusk-till-dawn.png",
   frase: "Do anoitecer ao amanhecer, em cada segundo, em cada respiração... eu estarei ao seu lado. Você não estará sozinha nunca mais. 🌙🌅",
   audio: "assets/zayn-sia-dusk-till-dawn.mp3", duracao: "4:25", favorita: true
+  },
+  
+  { titulo: "My Little Love", artista: "Adele", imagem: "assets/adele-my-little-love.png",
+  frase: "Você é meu pequeno amor, minha razão para ser melhor a cada dia. Te amo de um jeito que não cabe em palavras, que não tem fim, que é puro e eterno. 🌟",
+  audio: "assets/adele-my-little-love.mp3", duracao: "6:29", favorita: true
+  },
+  
+  { titulo: "Time After Time", artista: "Cyndi Lauper", imagem: "assets/cyndi-lauper-time-after-time.png",
+  frase: "Se você se perder, pode me ligar. Se cair, eu te seguro. Tempo após tempo, eu estarei aqui. Porque nosso amor é feito de recomeços. 🔁❤",
+  audio: "assets/cyndi-lauper-time-after-time.mp3", duracao: "4:01", favorita: true
+  },
+  
+  { titulo: "Caso Sério", artista: "Rita Lee", imagem: "assets/rita-lee-caso-serio.png",
+  frase: "O que sinto por você não é brincadeira, é caso sério! Todo mundo já percebeu - meu coração grita seu nome a cada batida. 💘",
+  audio: "assets/rita-lee-caso-serio.mp3", duracao: "3:10", favorita: true
   }
+
+
+
 
 ];
 

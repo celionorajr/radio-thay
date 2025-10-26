@@ -322,10 +322,33 @@ const musicas = [
   { titulo: "Unchained Melody", artista: "The Righteous Brothers", imagem: "assets/righteous-brothers-unchained-melody.png",
   frase: "O tempo pode passar, as estações mudar, mas meu amor por você permanece imutável. Como uma melodia que nunca termina, ecoa eternamente em meu coração. ⏳💙",
   audio: "assets/righteous-brothers-unchained-melody.mp3", duracao: "3:36", favorita: true
+  },
+  
+  {
+  titulo: "I Want You (She's So Heavy)", artista: "The Beatles", imagem: "assets/beatles-i-want-you-shes-so-heavy.png",
+  frase: "Você é pesada na minha alma, um desejo que me consome por completo. Não quero metades, não quero paz – quero você, inteira, mesmo que isso me afogue. 🌊🖤",
+  audio: "assets/beatles-i-want-you-shes-so-heavy.mp3", duracao: "7:47", favorita: true
+  },
+  
+  { titulo: "Lay All Your Love on Me", artista: "Avantasia", imagem: "assets/avantasia-lay-all-your-love-on-me.png",
+  frase: "Coloque todo seu amor em mim - seus medos, suas dúvidas, suas sombras. Eu serei seu porto seguro nessa tempestade, sua luz na escuridão. 🎭⚡",
+  audio: "assets/avantasia-lay-all-your-love-on-me.mp3", duracao: "5:18", favorita: true
+  },
+  
+  { titulo: "Be My Baby", artista: "The Ronettes", imagem: "assets/ronettes-be-my-baby.png",
+  frase: "Seja meu amor, meu sonho, meu tudo. Prometo te fazer feliz como ninguém nunca foi. Be my baby, hoje e sempre. 🎀",
+  audio: "assets/ronettes-be-my-baby.mp3", duracao: "2:40", favorita: true
+  },
+  
+  { titulo: "L-O-V-E", artista: "Michael Bublé", imagem: "assets/michael-buble-love.png",
+  frase: "L de 'linda', O de 'olhar', V de 'vida', E de 'eterno'. Assim é o que sinto por você: um amor que soletra felicidade em cada letra. 💖",
+  audio: "assets/michael-buble-love.mp3", duracao: "2:50", favorita: true
+  },
+  
+  { titulo: "Eu Amo Você", artista: "Tim Maia", imagem: "assets/tim-maia-eu-amo-voce.png",
+  frase: "Amo você de um jeito simples e verdadeiro, sem rodeios, sem medo. É um sentimento que brotou da alma e que eu carrego com orgulho. 💛",
+  audio: "assets/tim-maia-eu-amo-voce.mp3", duracao: "4:03", favorita: true
   }
-
-
-
 
 ];
 

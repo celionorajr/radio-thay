@@ -348,6 +348,36 @@ const musicas = [
   { titulo: "Eu Amo Você", artista: "Tim Maia", imagem: "assets/tim-maia-eu-amo-voce.png",
   frase: "Amo você de um jeito simples e verdadeiro, sem rodeios, sem medo. É um sentimento que brotou da alma e que eu carrego com orgulho. 💛",
   audio: "assets/tim-maia-eu-amo-voce.mp3", duracao: "4:03", favorita: true
+  },
+  
+  { titulo: "Love Bomb", artista: "The Neighbourhood", imagem: "assets/the-neighbourhood-love-bomb.png",
+  frase: "Seu amor é como uma bomba prestes a explodir dentro de mim - me consome, me transforma, me destrói e me reconstrói. E eu me entrego completamente a essa explosão. 💣❤",
+  audio: "assets/the-neighbourhood-love-bomb.mp3", duracao: "3:40", favorita: true
+  },
+  
+  { titulo: "Me+You", artista: "TWICE", imagem: "assets/twice-me-plus-you.png",
+  frase: "Me + You = ❤️. Juntos somos mais fortes, mais felizes, mais completos. Cada dia ao seu lado é uma equação perfeita de amor e alegria! 🧮💕",
+  audio: "assets/twice-me-plus-you.mp3", duracao: "3:25", favorita: true
+  },
+  
+  { titulo: "Young and Beautiful", artista: "Lana Del Rey", imagem: "assets/lana-young-beautiful.png",
+  frase: "O tempo pode passar, os anos podem vir, mas a minha certeza permanece a mesma: eu te amarei para sempre. Você não é linda apenas agora, você é a própria definição de beleza na minha vida. 💎",
+  audio: "assets/lana-young-beautiful.mp3", duracao: "3:56", favorita: true
+  },
+  
+  { titulo: "Unconditionally", artista: "Katy Perry", imagem: "assets/katy-unconditionally.png",
+  frase: "Eu te amo sem condições, sem medo, sem reservas. Em você, encontrei não só a pessoa que eu quero, mas a pessoa que eu preciso. Meu amor por você é um lugar seguro, onde todas as suas partes, inclusive as quebradas, são acolhidas. 🕊️",
+  audio: "assets/katy-unconditionally.mp3", duracao: "3:48", favorita: true
+  },
+  
+  { titulo: "Só Hoje", artista: "Jota Quest", imagem: "assets/jota-quest-so-hoje.png",
+  frase: "Eu queria que 'só hoje' fosse todo dia. Que cada momento ao seu lado se repetisse eternamente, com essa mesma paz, esse mesmo sorriso, essa mesma vontade de não estar em nenhum outro lugar. 🌅",
+  audio: "assets/jota-quest-so-hoje.mp3", duracao: "4:13", favorita: true
+  },
+  
+  { titulo: "Equalize", artista: "Pitty", imagem: "assets/pitty-equalize.png",
+  frase: "Com você, tudo equaliza. Minhas tempestades encontram a sua calmaria, meus medos encontram a sua coragem. Juntos, encontramos o ponto exato de equilíbrio onde o amor flutua em paz. 🌊",
+  audio: "assets/pitty-equalize.mp3", duracao: "4:22", favorita: true
   }
 
 ];

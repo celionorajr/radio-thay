@@ -378,7 +378,25 @@ const musicas = [
   { titulo: "Equalize", artista: "Pitty", imagem: "assets/pitty-equalize.png",
   frase: "Com você, tudo equaliza. Minhas tempestades encontram a sua calmaria, meus medos encontram a sua coragem. Juntos, encontramos o ponto exato de equilíbrio onde o amor flutua em paz. 🌊",
   audio: "assets/pitty-equalize.mp3", duracao: "4:22", favorita: true
+  },
+  
+  { titulo: "Photograph", artista: "Ed Sheran", imagem: "assets/ed-shearan-photograph.png",
+  frase: "E nos meus olhos, eu guardo cada fotografia nossa. Mesmo quando a distância tenta apagar, eu simplesmente fecho os olhos e você está aqui, viva em cada detalhe da minha memória. Nosso amor é a imagem que nunca desbota. 🖼",
+  audio: "assets/ed-shearan-photograph.mp3", duracao: "4:19", favorita: true
+  },
+  
+  { titulo: "Aliança", artista: "Tribalistas", imagem: "assets/tribalistas-alianca.png",
+  frase: "O nosso amor não precisa de juramentos complicados. Basta a aliança simples do seu olhar encontrando o meu, das nossas mãos se encaixando, dos nossos passos no mesmo ritmo. É você e eu, em sintonia. 🌙",
+  audio: "assets/tribalistas-alianca.mp3", duracao: "3:33", favorita: true
+  },
+  
+  {
+  titulo: "Fico Assim Sem Você", artista: "Adriana Partimpim", imagem: "assets/adriana-fico-assim-sem-voce.png",
+  frase: "Eu fico assim sem você: incompleto, desfocado, como uma melodia sem sua harmonia. Você é a peça que faltava não só no meu quebra-cabeça, mas em tudo. Minha vida ganhou cor, ritmo e sentido quando você chegou. 🧩",
+  audio: "assets/adriana-fico-assim-sem-voce.mp3", duracao: "3:12", favorita: true
   }
+
+
 
 ];
 

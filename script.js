@@ -394,9 +394,22 @@ const musicas = [
   titulo: "Fico Assim Sem Você", artista: "Adriana Partimpim", imagem: "assets/adriana-fico-assim-sem-voce.png",
   frase: "Eu fico assim sem você: incompleto, desfocado, como uma melodia sem sua harmonia. Você é a peça que faltava não só no meu quebra-cabeça, mas em tudo. Minha vida ganhou cor, ritmo e sentido quando você chegou. 🧩",
   audio: "assets/adriana-fico-assim-sem-voce.mp3", duracao: "3:12", favorita: true
+  },
+  
+  { titulo: "Quando a Gente Ama", artista: "Roberto Carlos", imagem: "assets/roberto-carlos-quando-a-gente-ama.png",
+  frase: "Quando a gente ama, é assim: não existe meio termo. Eu te amo com tudo que tenho e com tudo que sou. Você não é um detalhe na minha vida, você é a razão dela ter ficado completa. É tudo ou nada. E eu escolhi tudo, com você. 🌹",
+  audio: "assets/roberto-carlos-quando-a-gente-ama.mp3", duracao: "4:45", favorita: true
+  },
+  
+  { titulo: "Every Breath You Take", artista: "The Police", imagem: "assets/police-every-breath.png",
+  frase: "Cada respiro que eu dou, cada momento do meu dia, carrega um pedacinho do meu amor por você. Não é sobre vigilância, é sobre devoção - é saber que minha alma encontrou sua metade, e agora tudo em mim te procura, te celebra, te escolhe. 🌟",
+  audio: "assets/police-every-breath.mp3", duracao: "4:13", favorita: true
+  },
+  
+  { titulo: "Ela Une Todas as Coisas", artista: "Jorge Vercillo", imagem: "assets/vercillo-ela-une-todas-as-coisas.png",
+  frase: "Você é o ponto de equilíbrio que faltava. Une meus fragmentos, acalma minhas tempestades, dá sentido aos meus dias. Antes de você, eu era peças soltas. Agora, sou completo. Você une todas as coisas em mim. 🌊",
+  audio: "assets/vercillo-ela-une-todas-as-coisas.mp3", duracao: "4:18", favorita: true
   }
-
-
 
 ];
 

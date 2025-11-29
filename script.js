@@ -409,6 +409,16 @@ const musicas = [
   { titulo: "Ela Une Todas as Coisas", artista: "Jorge Vercillo", imagem: "assets/vercillo-ela-une-todas-as-coisas.png",
   frase: "Você é o ponto de equilíbrio que faltava. Une meus fragmentos, acalma minhas tempestades, dá sentido aos meus dias. Antes de você, eu era peças soltas. Agora, sou completo. Você une todas as coisas em mim. 🌊",
   audio: "assets/vercillo-ela-une-todas-as-coisas.mp3", duracao: "4:18", favorita: true
+  },
+  
+  { titulo: "Always", artista: "Bon Jovi", imagem: "assets/bon-jovi-always.png",
+  frase: "Eu te amarei sempre - não como uma promessa, mas como a verdade mais pura da minha vida. Nosso amor é para sempre, não porque é fácil, mas porque vale cada desafio. Você é meu sempre. 💎",
+  audio: "assets/bon-jovi-always.mp3", duracao: "5:53", favorita: true
+  },
+  
+  { titulo: "I Live My Life For You", artista: "FireHouse", imagem: "assets/firehouse-i-live-my-life.png",
+  frase: "Eu vivo minha vida por você - não como um sacrifício, mas como a maior honra. Cada sorriso meu é por você, cada conquista é nossa, cada amanhecer ganha sentido quando compartilhado ao seu lado. Você é meu propósito. 🌄",
+  audio: "assets/firehouse-i-live-my-life.mp3", duracao: "4:20", favorita: true
   }
 
 ];

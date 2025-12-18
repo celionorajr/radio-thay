@@ -419,6 +419,31 @@ const musicas = [
   { titulo: "I Live My Life For You", artista: "FireHouse", imagem: "assets/firehouse-i-live-my-life.png",
   frase: "Eu vivo minha vida por você - não como um sacrifício, mas como a maior honra. Cada sorriso meu é por você, cada conquista é nossa, cada amanhecer ganha sentido quando compartilhado ao seu lado. Você é meu propósito. 🌄",
   audio: "assets/firehouse-i-live-my-life.mp3", duracao: "4:20", favorita: true
+  },
+  
+  { titulo: "Amei Te Ver", artista: "Thiago Iorc", imagem: "assets/iorc-amei-te-ver.png",
+  frase: "Alguns momentos são tão perfeitos que merecem ser congelados no tempo. 'Amei te ver' assim, sorrindo, sendo você. E amo ainda mais saber que não foi apenas um instante, mas o início do sempre que vivemos juntos. 🕰️",
+  audio: "assets/iorc-amei-te-ver.mp3", duracao: "3:40", favorita: true
+  },
+  
+  { titulo: "Lenha", artista: "Zeca Baleiro", imagem: "assets/zeca-lenha.png",
+  frase: "Nosso amor é como fogo que precisa de lenha: as pequenas fagotas do dia a dia, os troncos fortes dos nossos sonhos, até as lascas dos desafios que superamos juntos. Tudo vira combustível para essa chama que aquece nossa vida. E eu sempre terei lenha para te amar. 🔥",
+  audio: "assets/zeca-lenha.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Na Rua, Na Chuva, Na Fazenda (Canção)", artista: "Kid Abelha", imagem: "assets/kid-abelha-rua-chuva-fazenda.png",
+  frase: "Na rua, na chuva, na fazenda... Em qualquer lugar do mundo, meu lugar é ao seu lado. O cenário muda, mas nosso amor é a constante perfeita. 🧭",
+  audio: "assets/kid-abelha-rua-chuva-fazenda.mp3", duracao: "3:52", favorita: true
+  },
+  
+  { titulo: "Relicário", artista: "Cássia Eller & Nando Reis", imagem: "assets/cassia-relicario.png",
+  frase: "Você é meu relicário: guardo cada momento nosso como uma joia preciosa. Cada memória é uma pérola no colar da nossa história. 💎",
+  audio: "assets/cassia-relicario.mp3", duracao: "4:05", favorita: true
+  },
+  
+  { titulo: "Táxi Lunar", artista: "Zeca Baleiro", imagem: "assets/zeca-taxi-lunar.png",
+  frase: "Com você, a vida vira uma viagem de táxi lunar. O destino é incerto, mas a bordo do nosso amor, cada volta é mágica. Vamos sonhar juntos? 🌙",
+  audio: "assets/zeca-taxi-lunar.mp3", duracao: "4:10", favorita: true
   }
 
 ];

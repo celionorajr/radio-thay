@@ -444,6 +444,16 @@ const musicas = [
   { titulo: "Táxi Lunar", artista: "Zeca Baleiro", imagem: "assets/zeca-taxi-lunar.png",
   frase: "Com você, a vida vira uma viagem de táxi lunar. O destino é incerto, mas a bordo do nosso amor, cada volta é mágica. Vamos sonhar juntos? 🌙",
   audio: "assets/zeca-taxi-lunar.mp3", duracao: "4:10", favorita: true
+  },
+  
+  { titulo: "Quem de Nós Dois", artista: "Ana Carolina", imagem: "assets/ana-quem-de-nos-dois.png",
+  frase: "Quem de nós dois precisa mais desse amor? A resposta é irrelevante. O que importa é que escolhemos ficar, escolhemos lutar, escolhemos nos entregar por inteiro. Somos um ao outro. 🤝", audio: "assets/ana-quem-de-nos-dois.mp3", duracao: "3:38",
+  favorita: true
+  },
+  
+  { titulo: "Quando a Chuva Passar", artista: "Ivete Sangalo", imagem: "assets/ivete-chuva-passar.png",
+  frase: "Quando a chuva passar, estaremos ainda mais fortes. De mãos dadas, transformamos cada gota em motivo para nos aproximarmos. Juntos, qualquer tempestade vira arco-íris. ✨",
+  audio: "assets/ivete-chuva-passar.mp3", duracao: "3:28", favorita: true
   }
 
 ];

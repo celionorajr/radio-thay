@@ -454,6 +454,10 @@ const musicas = [
   { titulo: "Quando a Chuva Passar", artista: "Ivete Sangalo", imagem: "assets/ivete-chuva-passar.png",
   frase: "Quando a chuva passar, estaremos ainda mais fortes. De mãos dadas, transformamos cada gota em motivo para nos aproximarmos. Juntos, qualquer tempestade vira arco-íris. ✨",
   audio: "assets/ivete-chuva-passar.mp3", duracao: "3:28", favorita: true
+  },
+  
+  { titulo: "Sinais de Fogo", artista: "Preta Gil", imagem: "assets/preto-gil-sinais-de-fogo.png",
+  frase: "Meu corpo dá sinais de fogo por você. Não são labaredas que queimam, são chamas que aquecem - e eu não quero apagar nenhuma. É o meu coração gritando seu nome. ❤️‍🔥", audio: "assets/preto-gil-sinais-de-fogo.mp3", duracao: "3:45", favorita: true
   }
 
 ];

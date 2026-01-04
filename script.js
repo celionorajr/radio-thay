@@ -463,6 +463,11 @@ const musicas = [
   { titulo: "Shivers", artista: "Ed Sheeran", imagem: "assets/ed-sheeran-shivers.png",
   frase: "Você me dá arrepios – do bom tipo. Aqueles que percorrem meu corpo todo e lembram que meu coração bate mais forte só por você. ❄️",
   audio: "assets/ed-sheeran-shivers.mp3", duracao: "3:27", favorita: true
+  },
+  
+  { titulo: "I See You", artista: "Leona Lewis", imagem: "assets/leona-i-see-you.png",
+  frase: "Eu vejo você. Não apenas seu sorriso, mas sua força. Não apenas seus olhos, mas sua alma. Vejo quem você é de verdade - e é isso que amo. 💙",
+  audio: "assets/leona-i-see-you.mp3", duracao: "4:20", favorita: true
   }
 
 ];

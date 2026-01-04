@@ -458,6 +458,11 @@ const musicas = [
   
   { titulo: "Sinais de Fogo", artista: "Preta Gil", imagem: "assets/preto-gil-sinais-de-fogo.png",
   frase: "Meu corpo dá sinais de fogo por você. Não são labaredas que queimam, são chamas que aquecem - e eu não quero apagar nenhuma. É o meu coração gritando seu nome. ❤️‍🔥", audio: "assets/preto-gil-sinais-de-fogo.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Shivers", artista: "Ed Sheeran", imagem: "assets/ed-sheeran-shivers.png",
+  frase: "Você me dá arrepios – do bom tipo. Aqueles que percorrem meu corpo todo e lembram que meu coração bate mais forte só por você. ❄️",
+  audio: "assets/ed-sheeran-shivers.mp3", duracao: "3:27", favorita: true
   }
 
 ];

@@ -468,6 +468,11 @@ const musicas = [
   { titulo: "I See You", artista: "Leona Lewis", imagem: "assets/leona-i-see-you.png",
   frase: "Eu vejo você. Não apenas seu sorriso, mas sua força. Não apenas seus olhos, mas sua alma. Vejo quem você é de verdade - e é isso que amo. 💙",
   audio: "assets/leona-i-see-you.mp3", duracao: "4:20", favorita: true
+  },
+  
+  { titulo: "Stay", artista: "Justin Bieber ft. The Kid LAROI", imagem: "assets/bieber-stay.png",
+  frase: "Eu não preciso implorar para você ficar, porque sei que vamos construir um 'sempre' juntos. Cada dia ao seu lado é uma escolha que eu faria infinitas vezes. ✨",
+  audio: "assets/bieber-stay.mp3", duracao: "2:21", favorita: true
   }
 
 ];

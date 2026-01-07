@@ -478,7 +478,7 @@ const musicas = [
   {
   titulo: "Deixa", artista: "Lagum ft. Ana Gabriela", imagem: "assets/lagum-deixa.png",
   frase: "Deixa nosso amor ser leve como a música: natural, sem pressa, só fluindo. Deixa eu te amar no ritmo certo, no tempo certo, do jeito certo. 🍃",
-  audio: "assets/lagum-deixa.mp3", duracao: "3:15", favorita: true
+  audio: "assets/lagum-deixa.mp3", duracao: "2:59", favorita: true
   },
   
   { titulo: "Partilhar", artista: "Rubel", imagem: "assets/rubel-partilhar.png",

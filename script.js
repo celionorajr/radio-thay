@@ -473,6 +473,17 @@ const musicas = [
   { titulo: "Stay", artista: "Justin Bieber ft. The Kid LAROI", imagem: "assets/bieber-stay.png",
   frase: "Eu não preciso implorar para você ficar, porque sei que vamos construir um 'sempre' juntos. Cada dia ao seu lado é uma escolha que eu faria infinitas vezes. ✨",
   audio: "assets/bieber-stay.mp3", duracao: "2:21", favorita: true
+  },
+  
+  {
+  titulo: "Deixa", artista: "Lagum ft. Ana Gabriela", imagem: "assets/lagum-deixa.png",
+  frase: "Deixa nosso amor ser leve como a música: natural, sem pressa, só fluindo. Deixa eu te amar no ritmo certo, no tempo certo, do jeito certo. 🍃",
+  audio: "assets/lagum-deixa.mp3", duracao: "3:15", favorita: true
+  },
+  
+  { titulo: "Partilhar", artista: "Rubel", imagem: "assets/rubel-partilhar.png",
+  frase: "Partilhar com você virou meu ritual favorito. Um café, um segredo, um olhar. Nosso amor mora nos detalhes que só nós dois conhecemos. 🫖",
+  audio: "assets/rubel-partilhar.mp3", duracao: "5:37", favorita: true
   }
 
 ];

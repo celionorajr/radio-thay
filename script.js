@@ -494,6 +494,11 @@ const musicas = [
   { titulo: "Farol das Estrelas", artista: "Soweto", imagem: "assets/soweto-farol-estrelas.png",
   frase: "Você é meu farol entre as estrelas – me guia nos momentos escuros e ilumina meu caminho com seu amor. Sempre que me perco, seu brilho me traz de volta. 🧭",
   audio: "assets/soweto-farol-estrelas.mp3", duracao: "4:05", favorita: true
+  },
+  
+  { titulo: "Tá Vendo Aquela Lua", artista: "Exaltasamba", imagem: "assets/exaltasamba-lua.png",
+  frase: "Tá vendo aquela lua? Ela testemunha todo meu amor por você. E brilha mais forte quando estamos juntos. 🌙",
+  audio: "assets/exaltasamba-lua.mp3", duracao: "3:52", favorita: true
   }
 
 ];

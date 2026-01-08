@@ -484,6 +484,16 @@ const musicas = [
   { titulo: "Partilhar", artista: "Rubel", imagem: "assets/rubel-partilhar.png",
   frase: "Partilhar com você virou meu ritual favorito. Um café, um segredo, um olhar. Nosso amor mora nos detalhes que só nós dois conhecemos. 🫖",
   audio: "assets/rubel-partilhar.mp3", duracao: "5:37", favorita: true
+  },
+  
+  { titulo: "Katinguelê", artista: "Inaraí", imagem: "assets/inarai-katinguele.png",
+  frase: "Você é meu katinguelê – a batida que acelera meu coração, a dança que embala meus dias. Com você, até o simples vira pura magia. ✨",
+  audio: "assets/inarai-katinguele.mp3", duracao: "2:55", favorita: true
+  },
+  
+  { titulo: "Farol das Estrelas", artista: "Soweto", imagem: "assets/soweto-farol-estrelas.png",
+  frase: "Você é meu farol entre as estrelas – me guia nos momentos escuros e ilumina meu caminho com seu amor. Sempre que me perco, seu brilho me traz de volta. 🧭",
+  audio: "assets/soweto-farol-estrelas.mp3", duracao: "4:05", favorita: true
   }
 
 ];

@@ -499,7 +499,17 @@ const musicas = [
   { titulo: "Tá Vendo Aquela Lua", artista: "Exaltasamba", imagem: "assets/exaltasamba-lua.png",
   frase: "Tá vendo aquela lua? Ela testemunha todo meu amor por você. E brilha mais forte quando estamos juntos. 🌙",
   audio: "assets/exaltasamba-lua.mp3", duracao: "3:52", favorita: true
-  }
+  },
+  
+  { titulo: "Toca o Telefone", artista: "Adelino Nascimento", imagem: "assets/adelino-telefone.png",
+  frase: "Meu coração faz o mesmo barulho que o telefone quando é você ligando. Cada toque é uma emoção, cada chamada é um pedaço de você chegando até mim. 📞",
+  audio: "assets/adelino-telefone.mp3", duracao: "3:20", favorita: true
+  }  
+  /*{ titulo: "Cheia de Manias", artista: "Raça Negra", imagem: "assets/raca-negra-manias.png",
+  frase: "Amo cada uma das suas manias - aqueles detalhes que fazem ser só você. São essas pequenas coisas que tornam nosso amor único e especial. ✨",
+  audio: "assets/raca-negra-manias.mp3", duracao: "3:35", favorita: true
+  }*/
+
 
 ];
 

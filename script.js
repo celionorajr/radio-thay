@@ -514,6 +514,11 @@ const musicas = [
   { titulo: "Blessing", artista: "Etana ft. Alborosie", imagem: "assets/etana-blessing.png",
   frase: "Você é a bênção que eu nem sabia que precisava. A gratidão que sinto por ter você na minha vida transborda a cada dia. Obrigado por ser meu maior presente. 🎁",
   audio: "assets/etana-blessing.mp3", duracao: "3:50", favorita: true
+  },
+  
+  { titulo: "If I Had a Boat", artista: "Lyle Lovett", imagem: "assets/lyle-lovett-boat.png",
+  frase: "Se eu tivesse um barco e um cavalo, eu os levaria para navegar e cavalgar com você. Porque a maior aventura não é ter coisas, é ter você ao meu lado em todas elas. 🌟",
+  audio: "assets/lyle-lovett-boat.mp3", duracao: "3:10", favorita: true
   }
 
 

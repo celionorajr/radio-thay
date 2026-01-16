@@ -519,8 +519,19 @@ const musicas = [
   { titulo: "If I Had a Boat", artista: "Lyle Lovett", imagem: "assets/lyle-lovett-boat.png",
   frase: "Se eu tivesse um barco e um cavalo, eu os levaria para navegar e cavalgar com você. Porque a maior aventura não é ter coisas, é ter você ao meu lado em todas elas. 🌟",
   audio: "assets/lyle-lovett-boat.mp3", duracao: "3:10", favorita: true
+  },
+  
+  { titulo: "Por Causa de Você", artista: "Dolores Duran", imagem: "assets/dolores-por-causa-de-voce.png",
+  frase: "Por causa de você, estou aprendendo a ver em cores. Estou reaprendendo o que é respeito, presença e cuidado. Obrigado por ser minha maior lição e minha maior inspiração para crescer. 🎨", audio: "assets/dolores-por-causa-de-voce.mp3", duracao: "2:55", favorita: true
+  },
+  
+  { titulo: "All Night", artista: "Beyoncé", imagem: "assets/beyonce-all-night.png",
+  frase: "Escolho você a cada dia. Escolho ser diferente, estar presente, construir. Nosso amor não é só sentimento - é a decisão diária de cuidar e respeitar. E eu estou aqui, fazendo essa escolha. ✨", audio: "assets/beyonce-all-night.mp3", duracao: "5:22", favorita: true
+  },
+  
+  { titulo: "Against All Odds (Take a Look At Me Now)", artista: "Phil Collins", imagem: "assets/phil-collins-against-all-odds.png",
+  frase: "Olhe para mim agora: ainda em construção, mas mais consciente. Nosso amor enfrentou provas e sobreviveu. Agora, luto todos os dias para ser digno dessa segunda chance. Nossa história vale cada esforço. 🏔️", audio: "assets/phil-collins-against-all-odds.mp3", duracao: "3:25", favorita: true
   }
-
 
 ];
 

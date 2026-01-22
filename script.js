@@ -531,6 +531,31 @@ const musicas = [
   
   { titulo: "Against All Odds (Take a Look At Me Now)", artista: "Phil Collins", imagem: "assets/phil-collins-against-all-odds.png",
   frase: "Olhe para mim agora: ainda em construção, mas mais consciente. Nosso amor enfrentou provas e sobreviveu. Agora, luto todos os dias para ser digno dessa segunda chance. Nossa história vale cada esforço. 🏔️", audio: "assets/phil-collins-against-all-odds.mp3", duracao: "3:25", favorita: true
+  },
+  
+  { titulo: "Será Que É Amor", artista: "Arlindo Cruz", imagem: "assets/arlindo-sera-que-e-amor.png",
+  frase: "O coração já sabia antes da razão. O que começou com um 'será que é amor?' se transformou na certeza mais linda da minha vida: sim, é amor, e é por você. ❤️",
+  audio: "assets/arlindo-sera-que-e-amor.mp3", duracao: "3:40", favorita: true
+  },
+  
+  { titulo: "Várias Queixas", artista: "Gilsons", imagem: "assets/gilsons-varias-queixas.png",
+  frase: "Até as nossas 'várias queixas' são provas de que nos importamos. Porque amo você inteira, com seus momentos doces e até com os desencontros que nos fazem crescer juntos. É a vida real, e eu escolhi ela com você. 🌿",
+  audio: "assets/gilsons-varias-queixas.mp3", duracao: "3:15", favorita: true
+  },
+  
+  { titulo: "Carinhoso", artista: "Marisa Monte", imagem: "assets/marisa-carinhoso.png",
+  frase: "Meu carinhoso é você. É no seu abraço que encontro meu porto, na sua voz que ouço minha canção preferida. Você é o aconchego que meu coração sempre procurou. 🕊️",
+  audio: "assets/marisa-carinhoso.mp3", duracao: "3:42", favorita: true
+  },
+  
+  { titulo: "Final Feliz", artista: "Jorge Vercillo", imagem: "assets/vercillo-final-feliz.png",
+  frase: "Com você, acredito em finais felizes. Cada capítulo da nossa história escreve um amor mais bonito, mais forte, mais nosso. E o melhor ainda está por vir. ✨",
+  audio: "assets/vercillo-final-feliz.mp3", duracao: "4:08", favorita: true
+  },
+  
+  { titulo: "Deixa Eu Te Amar", artista: "Agepê", imagem: "assets/agepe-deixa-eu-te-amar.png",
+  frase: "Deixa eu te amar do meu jeito, com calma e com verdade. Deixa eu mostrar que cada detalhe seu é importante para mim. 💖",
+  audio: "assets/agepe-deixa-eu-te-amar.mp3", duracao: "3:45", favorita: true
   }
 
 ];

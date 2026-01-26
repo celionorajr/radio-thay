@@ -556,6 +556,10 @@ const musicas = [
   { titulo: "Deixa Eu Te Amar", artista: "Agepê", imagem: "assets/agepe-deixa-eu-te-amar.png",
   frase: "Deixa eu te amar do meu jeito, com calma e com verdade. Deixa eu mostrar que cada detalhe seu é importante para mim. 💖",
   audio: "assets/agepe-deixa-eu-te-amar.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Until I Found You", artista: "Stephen Sanchez", imagem: "assets/stephen-until-i-found-you.png",
+  frase: "Eu vaguei pela vida até te encontrar. E de repente, tudo fez sentido. Você foi a peça que faltava no meu quebra-cabeça, a melodia que meu coração sempre procurou. Enfim, te encontrei. 💖", audio: "assets/stephen-until-i-found-you.mp3", duracao: "2:57", favorita: true
   }
 
 ];

@@ -560,6 +560,10 @@ const musicas = [
   
   { titulo: "Until I Found You", artista: "Stephen Sanchez", imagem: "assets/stephen-until-i-found-you.png",
   frase: "Eu vaguei pela vida até te encontrar. E de repente, tudo fez sentido. Você foi a peça que faltava no meu quebra-cabeça, a melodia que meu coração sempre procurou. Enfim, te encontrei. 💖", audio: "assets/stephen-until-i-found-you.mp3", duracao: "2:57", favorita: true
+  },
+  
+  { titulo: "Dream a Little Dream Of Me", artista: "The Mamas & The Papas", imagem: "assets/mamas-papas-dream.png",
+  frase: "Que você sonhe um pouquinho comigo todas as noites. E se eu não estiver no seu sonho, saiba que você estará sempre no meu. Boa noite, meu amor. 🌙",  audio: "assets/mamas-papas-dream.mp3", duracao: "3:13", favorita: true
   }
 
 ];

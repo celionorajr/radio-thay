@@ -564,6 +564,10 @@ const musicas = [
   
   { titulo: "Dream a Little Dream Of Me", artista: "The Mamas & The Papas", imagem: "assets/mamas-papas-dream.png",
   frase: "Que você sonhe um pouquinho comigo todas as noites. E se eu não estiver no seu sonho, saiba que você estará sempre no meu. Boa noite, meu amor. 🌙",  audio: "assets/mamas-papas-dream.mp3", duracao: "3:13", favorita: true
+  },
+  
+  { titulo: "A Beleza É Você, Menina", artista: "Bebeto", imagem: "assets/bebeto-beleza.png",
+  frase: "A beleza é você, menina! Não só no que meus olhos veem, mas na luz que você traz para meus dias, no sorriso que aquece meu mundo. Você é a definição viva do que é lindo. 💫", audio: "assets/bebeto-beleza.mp3", duracao: "3:35", favorita: true
   }
 
 ];

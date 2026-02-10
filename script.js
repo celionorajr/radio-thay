@@ -568,6 +568,10 @@ const musicas = [
   
   { titulo: "A Beleza É Você, Menina", artista: "Bebeto", imagem: "assets/bebeto-beleza.png",
   frase: "A beleza é você, menina! Não só no que meus olhos veem, mas na luz que você traz para meus dias, no sorriso que aquece meu mundo. Você é a definição viva do que é lindo. 💫", audio: "assets/bebeto-beleza.mp3", duracao: "3:35", favorita: true
+  },
+  
+  { titulo: "Sorri, Sou Rei", artista: "Natiruts ft. Claudia Leitte", imagem: "assets/natiruts-sorri-sou-rei.png",
+  frase: "Sorrio porque sou rei do seu coração, e você é rainha do meu. Juntos, nosso amor é o reino mais feliz que poderia existir. Aqui, a coroa é feita de carinho e o cetro é nosso abraço. 👑", audio: "assets/natiruts-sorri-sou-rei.mp3", duracao: "3:45", favorita: true
   }
 
 ];

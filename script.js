@@ -572,6 +572,10 @@ const musicas = [
   
   { titulo: "Sorri, Sou Rei", artista: "Natiruts ft. Claudia Leitte", imagem: "assets/natiruts-sorri-sou-rei.png",
   frase: "Sorrio porque sou rei do seu coração, e você é rainha do meu. Juntos, nosso amor é o reino mais feliz que poderia existir. Aqui, a coroa é feita de carinho e o cetro é nosso abraço. 👑", audio: "assets/natiruts-sorri-sou-rei.mp3", duracao: "3:45", favorita: true
+  },
+  
+  { titulo: "Um Amor Puro", artista: "Djavan", imagem: "assets/djavan-amor-puro.png",
+  frase: "Nosso amor é puro: sem artifícios, sem complicações. É no silêncio que nos entendemos, no olhar que nos conectamos. Um sentimento verdadeiro que só cresce. 🤍", audio: "assets/djavan-amor-puro.mp3", duracao: "4:12", favorita: true
   }
 
 ];

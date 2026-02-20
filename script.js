@@ -576,6 +576,10 @@ const musicas = [
   
   { titulo: "Um Amor Puro", artista: "Djavan", imagem: "assets/djavan-amor-puro.png",
   frase: "Nosso amor é puro: sem artifícios, sem complicações. É no silêncio que nos entendemos, no olhar que nos conectamos. Um sentimento verdadeiro que só cresce. 🤍", audio: "assets/djavan-amor-puro.mp3", duracao: "4:12", favorita: true
+  },
+  
+  { titulo: "Endoideceu Meu Coração", artista: "João Gomes", imagem: "assets/joao-gomes-endoideceu.png",
+  frase: "Você endoideceu meu coração do jeito mais gostoso possível. Bagunçou minha rotina, tomou conta dos meus pensamentos e fez tudo ficar mais colorido. Que loucura boa é essa que você me causa? 🔥"  audio: "assets/joao-gomes-endoideceu.mp3", duracao: "2:55", favorita: true
   }
 
 ];

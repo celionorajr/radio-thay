@@ -986,6 +986,7 @@ function criarPetala() {
 for (let i = 0; i < 8; i++) setTimeout(criarPetala, i * 700);
 
 /* ====== MENSAGENS / TOASTS ====== */
+/* ====== MENSAGENS / TOASTS ====== */
 function mostrarMensagemSecreta() {
   const mensagens = [
     "Te amo mais a cada dia ❤️","Você é meu sonho realizado","Meu amor por você é infinito",

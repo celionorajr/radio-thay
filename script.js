@@ -579,7 +579,7 @@ const musicas = [
   },
   
   { titulo: "Endoideceu Meu Coração", artista: "João Gomes", imagem: "assets/joao-gomes-endoideceu.png",
-  frase: "Você endoideceu meu coração do jeito mais gostoso possível. Bagunçou minha rotina, tomou conta dos meus pensamentos e fez tudo ficar mais colorido. Que loucura boa é essa que você me causa? 🔥"  audio: "assets/joao-gomes-endoideceu.mp3", duracao: "2:55", favorita: true
+  frase: "Você endoideceu meu coração do jeito mais gostoso possível. Bagunçou minha rotina, tomou conta dos meus pensamentos e fez tudo ficar mais colorido. Que loucura boa é essa que você me causa? 🔥",  audio: "assets/joao-gomes-endoideceu.mp3", duracao: "2:55", favorita: true
   }
 
 ];

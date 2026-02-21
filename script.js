@@ -988,14 +988,20 @@ for (let i = 0; i < 8; i++) setTimeout(criarPetala, i * 700);
 /* ====== MENSAGENS / TOASTS ====== */
 function mostrarMensagemSecreta() {
   const mensagens = [
-    "Você é especial para mim","Gosto muito de você","Cada dia com você é único",
-    "Seu sorriso me alegra","Você faz meus dias melhores","Meu coração é seu ❤️",
-    "Sinto sua falta mesmo quando você está perto","Você é meu pensamento favorito",
-    "Amo o jeito que você me olha","Seu abraço é meu lugar favorito","Você me completa",
-    "Nada se compara ao seu carinho","Me apaixono mais a cada dia","Você é a melhor parte do meu dia",
-    "Seu amor me transformou","Amo nossa conexão","Você me inspira a ser melhor",
-    "Seu cheiro é meu aroma favorito","Amo nossa conversa sem fim","Você é lindo(a) por dentro e por fora"
-  ];
+    "Te amo mais a cada dia ❤️","Você é meu sonho realizado","Meu amor por você é infinito",
+    "Você é minha razão de sorrir","Te quero pra sempre","Meu coração é seu lar",
+    "Você é meu presente preferido","Só de você existir já me faz feliz","Te amar é minha paz",
+    "Você é meu tudo","Meu mundo é mais colorido com você","Seu amor me completa",
+    "Te escolheria todas as vidas","Você é minha pessoa favorita","Meu amor, minha vida",
+    "Sou completamente seu/sua","Você me faz tão bem","Te levo comigo onde vou",
+    "Você é meu lugar no mundo","Te amo em qualquer língua","Você é meu destino",
+    "Meu amor por você não tem fim","Você é meu abrigo","Te quero hoje e sempre",
+    "Meu sorriso mais sincero é por você","Você é minha calmaria","Te amo além do que vejo",
+    "Você é meu amor eterno","Meu coração bate por você","Te amo do jeito mais simples e verdadeiro",
+    "Você é meu pedacinho do céu","Te amar é meu vício preferido","Você é minha melhor escolha",
+    "Meu amor, você é tudo","Te amo sem limites","Você é minha poesia preferida",
+    "Meu mundo gira em torno de você","Te quero em todos os meus amanhãs","Você é meu amor primeiro"
+	];
   const mensagem = mensagens[Math.floor(Math.random() * mensagens.length)] + " ❤️";
   mostrarNotificacao(mensagem);
 }
